@@ -29,5 +29,5 @@ type Input = {
 }
 
 type Output = {
-  token: Token
+  token: string
 }

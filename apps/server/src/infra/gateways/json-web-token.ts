@@ -1,4 +1,4 @@
-import { sign, verify } from "jsonwebtoken"
+import { JwtPayload, sign, verify } from "jsonwebtoken"
 import { User } from "@/domain/entities"
 
 export class JsonWebToken {
@@ -11,7 +11,11 @@ export class JsonWebToken {
     )
   }
 
-  verify(token: string): any {
-    return verify(token, this.key)
+  verify(token: string): JwtPayload | string {
+    try {
+      return verify(token, this.key)
+    } catch {
+      throw new Error("Token malformated")
+    }
   }
 }
