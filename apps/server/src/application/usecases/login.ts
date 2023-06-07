@@ -1,7 +1,7 @@
-import { Token } from "@/domain/gateways/token"
-import { UserRepository } from "@/domain/repositories/user"
+import { Token } from "@/domain/gateways"
+import { UserRepository } from "@/domain/repositories"
 
-export default class Login {
+export class Login {
   constructor(
     readonly userRepository: UserRepository,
     readonly tokenGateway: Token

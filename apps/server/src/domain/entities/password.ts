@@ -1,6 +1,6 @@
 import { pbkdf2, randomBytes } from "crypto"
 
-export default class Password {
+export class Password {
   constructor(readonly value: string, readonly salt: string) {}
 
   static create(password: string, salt?: string): Promise<Password> {

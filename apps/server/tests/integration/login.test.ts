@@ -1,9 +1,9 @@
 import { test, expect } from "vitest"
 
-import User from "@/domain/entities/user"
-import UserRepositoryMemory from "@/infra/repositories/memory/user"
-import Login from "@/application/usecases/login"
-import JsonWebToken from "@/infra/gateways/json-web-token"
+import { User } from "@/domain/entities"
+import { UserRepositoryMemory } from "@/infra/repositories/memory"
+import { Login } from "@/application/usecases"
+import { JsonWebToken } from "@/infra/gateways"
 
 test("Deve realizar o login com sucesso", async () => {
   const user = await User.create(

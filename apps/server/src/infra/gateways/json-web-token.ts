@@ -1,7 +1,7 @@
-import User from "@/domain/entities/user"
 import { sign, verify } from "jsonwebtoken"
+import { User } from "@/domain/entities"
 
-export default class JsonWebToken {
+export class JsonWebToken {
   constructor(readonly key: string) {}
 
   generate(user: User, expiresIn: number, issueDate: Date) {

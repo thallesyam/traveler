@@ -1,6 +1,5 @@
 import { expect, test } from "vitest"
-import User from "@/domain/entities/user"
-import Password from "@/domain/entities/password"
+import { User } from "@/domain/entities"
 
 test("Deve criar um usuário válido", async () => {
   const user = await User.create(

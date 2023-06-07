@@ -1,6 +1,6 @@
-import Password from "./password"
+import { Password } from "@/domain/entities"
 
-export default class User {
+export class User {
   createdAt = new Date()
 
   constructor(

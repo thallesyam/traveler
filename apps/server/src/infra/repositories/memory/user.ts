@@ -1,7 +1,7 @@
-import User from "@/domain/entities/user"
-import { UserRepository } from "@/domain/repositories/user"
+import { User } from "@/domain/entities"
+import { UserRepository } from "@/domain/repositories"
 
-export default class UserRepositoryMemory implements UserRepository {
+export class UserRepositoryMemory implements UserRepository {
   users: User[]
 
   constructor() {
