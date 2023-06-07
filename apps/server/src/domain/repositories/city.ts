@@ -4,4 +4,5 @@ export interface CityRepository {
   save(city: City): Promise<void>
   findAll(): Promise<City[]>
   findByName(name: string): Promise<City | undefined>
+  findById(id: string): Promise<City>
 }

@@ -22,4 +22,14 @@ export class CityRepositoryMemory implements CityRepository {
     )
     return city
   }
+
+  async findById(id: string): Promise<City> {
+    const city = this.cities.find(
+      (city) => city.id.toLowerCase() === id.toLowerCase()
+    )
+    if (!city) {
+      throw new Error("City not found")
+    }
+    return city
+  }
 }

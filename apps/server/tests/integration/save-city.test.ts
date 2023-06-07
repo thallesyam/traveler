@@ -1,6 +1,6 @@
 import { expect, test } from "vitest"
 import { CityRepositoryMemory } from "@/infra/repositories/memory"
-import { SaveCity } from "@/application/usecases/save-city"
+import { SaveCity } from "@/application/usecases"
 
 test("Deve criar uma cidade com sucesso", async () => {
   const cityRepository = new CityRepositoryMemory()

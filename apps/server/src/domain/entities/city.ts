@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto"
 
 export class City {
-  id: string
+  readonly id: string
 
   constructor(
     readonly name: string,
