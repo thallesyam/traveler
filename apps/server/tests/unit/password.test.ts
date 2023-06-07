@@ -9,3 +9,14 @@ test("Deve criar uma senha", async function () {
   expect(password.value).toBe(PASSWORD_HASH)
   expect(password.salt).toBe("salt")
 })
+
+test("Deve criar uma senha sem enviar o salt", async function () {
+  const password = await Password.create("12345678")
+  expect(password).not.toBeUndefined()
+})
+
+test("Deve tentar criar uma senha inválida", async function () {
+  expect(
+    async () => await Password.create("123456", "salt")
+  ).rejects.toThrowError(new Error("Invalid password"))
+})
