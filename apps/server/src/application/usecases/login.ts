@@ -1,3 +1,4 @@
+import Password from "@/domain/entities/password"
 import { UserRepository } from "@/domain/repositories/user"
 
 export default class Login {
@@ -18,7 +19,7 @@ export default class Login {
 
 type Input = {
   email: string
-  password: string
+  password: Password
 }
 
 type Output = {

@@ -2,7 +2,11 @@ import User from "@/domain/entities/user"
 import { UserRepository } from "@/domain/repositories/user"
 
 export default class UserRepositoryMemory implements UserRepository {
-  users: User[] = []
+  users: User[]
+
+  constructor() {
+    this.users = []
+  }
 
   async save(user: User): Promise<void> {
     this.users.push(user)
