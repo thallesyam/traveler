@@ -1,5 +1,5 @@
 import { City } from "@/domain/entities"
-import { CityRepository } from "@/domain/repositories"
+import { CityRepository } from "@/application/repositories"
 
 export class CityRepositoryMemory implements CityRepository {
   cities: City[]

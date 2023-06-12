@@ -1,4 +1,4 @@
-import { Token } from "@/domain/gateways"
+import { Token } from "@/application/gateways"
 
 export default class CheckAuth {
   constructor(readonly tokenGateway: Token) {}

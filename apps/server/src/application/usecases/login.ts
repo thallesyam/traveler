@@ -1,5 +1,5 @@
-import { Token } from "@/domain/gateways"
-import { UserRepository } from "@/domain/repositories"
+import { Token } from "@/application/gateways"
+import { UserRepository } from "@/application/repositories"
 
 export class Login {
   constructor(
