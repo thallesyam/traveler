@@ -25,11 +25,21 @@ export class CityRepositoryMemory implements CityRepository {
 
   async findById(id: string): Promise<City> {
     const city = this.cities.find(
-      (city) => city.id.toLowerCase() === id.toLowerCase()
+      (city) => city.id?.toLowerCase() === id.toLowerCase()
     )
     if (!city) {
       throw new Error("City not found")
     }
     return city
+  }
+
+  async update(id: string, data: City): Promise<void> {
+    this.cities = this.cities.map((city) => {
+      if (city.id === id) {
+        return data
+      }
+
+      return city
+    })
   }
 }
