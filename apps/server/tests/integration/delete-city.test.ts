@@ -15,8 +15,26 @@ test("Deve deletar uma cidade com sucesso", async () => {
   const saveCity = new SaveCity(cityRepository)
   await saveCity.execute(input)
   const city = (await cityRepository.findByName(input.name)) as City
-  const updateCity = new DeleteCity(cityRepository)
-  await updateCity.execute({ id: city.getCityId() })
+  const deleteCity = new DeleteCity(cityRepository)
+  await deleteCity.execute({ id: city.getCityId() })
   const getCities = await cityRepository.findAll()
   expect(getCities).toHaveLength(0)
+})
+
+test("Deve tentar deletar uma cidade inexistente", async () => {
+  const cityRepository = new CityRepositoryMemory()
+  const input = {
+    name: "Rio de Janeiro",
+    images: ["fake-image"],
+    description:
+      "O Rio de Janeiro é uma cidade deslumbrante com paisagens de tirar o fôlego.",
+  }
+  const saveCity = new SaveCity(cityRepository)
+  await saveCity.execute(input)
+  const deleteCity = new DeleteCity(cityRepository)
+  const getCities = await cityRepository.findAll()
+  expect(
+    async () => await deleteCity.execute({ id: "fake-id" })
+  ).rejects.toThrow(new Error("City not found"))
+  expect(getCities).toHaveLength(1)
 })
