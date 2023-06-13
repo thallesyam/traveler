@@ -36,8 +36,15 @@ test("Deve editar apenas um dos dados de uma cidade com sucesso utilizando nome"
     description:
       "O Rio de Janeiro é uma cidade deslumbrante com paisagens de tirar o fôlego.",
   }
+  const input1 = {
+    name: "Bahia",
+    images: ["fake-image"],
+    description:
+      "A Bahia é uma cidade deslumbrante com paisagens de tirar o fôlego.",
+  }
   const saveCity = new SaveCity(cityRepository)
   await saveCity.execute(input)
+  await saveCity.execute(input1)
   const city = (await cityRepository.findByName(input.name)) as City
   const newCityData = {
     name: "São Paulo",
