@@ -42,4 +42,8 @@ export class CityRepositoryMemory implements CityRepository {
       return city
     })
   }
+
+  async delete(id: string): Promise<void> {
+    this.cities = this.cities.filter((city) => city.id !== id)
+  }
 }

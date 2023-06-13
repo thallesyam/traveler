@@ -6,4 +6,5 @@ export interface CityRepository {
   findByName(name: string): Promise<City | undefined>
   findById(id: string): Promise<City>
   update(id: string, data: City): Promise<void>
+  delete(id: string): Promise<void>
 }
