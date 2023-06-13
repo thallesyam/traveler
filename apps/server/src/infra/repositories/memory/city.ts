@@ -24,9 +24,8 @@ export class CityRepositoryMemory implements CityRepository {
   }
 
   async findById(id: string): Promise<City> {
-    const city = this.cities.find(
-      (city) => city.id?.toLowerCase() === id.toLowerCase()
-    )
+    const city = this.cities.find((city) => city.getCityId() === id)
+
     if (!city) {
       throw new Error("City not found")
     }
@@ -35,7 +34,7 @@ export class CityRepositoryMemory implements CityRepository {
 
   async update(id: string, data: City): Promise<void> {
     this.cities = this.cities.map((city) => {
-      if (city.id === id) {
+      if (city.getCityId() === id) {
         return data
       }
 
@@ -44,6 +43,6 @@ export class CityRepositoryMemory implements CityRepository {
   }
 
   async delete(id: string): Promise<void> {
-    this.cities = this.cities.filter((city) => city.id !== id)
+    this.cities = this.cities.filter((city) => city.getCityId() !== id)
   }
 }

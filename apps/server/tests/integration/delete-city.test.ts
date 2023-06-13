@@ -2,6 +2,7 @@ import { expect, test } from "vitest"
 import { CityRepositoryMemory } from "@/infra/repositories/memory"
 import { SaveCity } from "@/application/usecases"
 import { DeleteCity } from "@/application/usecases/delete-city"
+import { City } from "@/domain/entities"
 
 test("Deve deletar uma cidade com sucesso", async () => {
   const cityRepository = new CityRepositoryMemory()
@@ -13,9 +14,9 @@ test("Deve deletar uma cidade com sucesso", async () => {
   }
   const saveCity = new SaveCity(cityRepository)
   await saveCity.execute(input)
-  const city = await cityRepository.findByName(input.name)
+  const city = (await cityRepository.findByName(input.name)) as City
   const updateCity = new DeleteCity(cityRepository)
-  await updateCity.execute({ id: city?.id ?? "" })
+  await updateCity.execute({ id: city.getCityId() })
   const getCities = await cityRepository.findAll()
   expect(getCities).toHaveLength(0)
 })

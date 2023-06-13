@@ -2,6 +2,7 @@ import { expect, test } from "vitest"
 import { CityRepositoryMemory } from "@/infra/repositories/memory"
 import { SaveCity } from "@/application/usecases"
 import { GetCityById } from "@/application/usecases"
+import { City } from "@/domain/entities"
 
 test("Deve buscar uma cidade por id com sucesso", async () => {
   const cityRepository = new CityRepositoryMemory()
@@ -13,9 +14,9 @@ test("Deve buscar uma cidade por id com sucesso", async () => {
   }
   const saveCity = new SaveCity(cityRepository)
   await saveCity.execute(input)
-  const city = await cityRepository.findByName(input.name)
+  const city = (await cityRepository.findByName(input.name)) as City
   const getCityById = new GetCityById(cityRepository)
-  const cityById = await getCityById.execute({ id: city?.id ?? "" })
+  const cityById = await getCityById.execute({ id: city.getCityId() ?? "" })
   expect(cityById.name).toStrictEqual(input.name)
   expect(cityById.images).toStrictEqual(input.images)
   expect(cityById.description).toStrictEqual(input.description)

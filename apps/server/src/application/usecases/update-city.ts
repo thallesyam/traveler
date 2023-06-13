@@ -10,9 +10,11 @@ export class UpdateCity {
     const city = new City(
       input.data?.name || actualCity.name,
       input.data?.images || actualCity.images,
-      input.data?.description || actualCity.description,
-      actualCity.id
+      input.data?.description || actualCity.description
     )
+
+    city.setCityId(actualCity.getCityId())
+
     await this.cityRepository.update(input.id, city)
 
     return
