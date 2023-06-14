@@ -21,8 +21,4 @@ export class Address {
     const uuid = randomUUID()
     return uuid
   }
-
-  getAdressId() {
-    return this.id
-  }
 }
