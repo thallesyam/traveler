@@ -6,7 +6,8 @@ test("Deve criar um endereço válido", async () => {
     "08225260",
     "Rua Francisco da cunha",
     "Jardim Itapemirim",
-    "533"
+    "533",
+    { lat: 10, long: 10 }
   )
   expect(address.cep).toEqual("08225260")
   expect(address.street).toEqual("Rua Francisco da cunha")
@@ -15,7 +16,7 @@ test("Deve criar um endereço válido", async () => {
 })
 
 test("Deve tentar criar um endereço faltando informações", async () => {
-  expect(() => new Address("", "", "", "")).toThrow(
+  expect(() => new Address("", "", "", "", { lat: 0, long: 0 })).toThrow(
     new Error("Insufficient information to create address")
   )
 })
