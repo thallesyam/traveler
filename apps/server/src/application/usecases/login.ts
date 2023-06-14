@@ -15,7 +15,7 @@ export class Login {
       throw new Error("Email ou senha inválido")
     }
 
-    const token = await this.tokenGateway.generate(user, 100000000, new Date())
+    const token = this.tokenGateway.generate(user, 100000000, new Date())
 
     return {
       token,
