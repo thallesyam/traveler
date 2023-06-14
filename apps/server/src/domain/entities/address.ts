@@ -22,10 +22,6 @@ export class Address {
     return uuid
   }
 
-  getCoordinate() {
-    return this.coordinate
-  }
-
   getAdressId() {
     return this.id
   }
