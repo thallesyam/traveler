@@ -1,5 +1,8 @@
+import { randomUUID } from "crypto"
+
 export class Address {
   private coordinate: { lat: number; long: number }
+  private id: string
 
   constructor(
     readonly cep: string,
@@ -8,6 +11,7 @@ export class Address {
     readonly number: string
   ) {
     this.coordinate = this.generateCoordinate()
+    this.id = this.generateAddressId()
 
     if (!cep || !street || !neighborhood || !number) {
       throw new Error("Insufficient information to create address")
@@ -21,7 +25,16 @@ export class Address {
     return { lat, long }
   }
 
+  private generateAddressId() {
+    const uuid = randomUUID()
+    return uuid
+  }
+
   getCoordinate() {
     return this.coordinate
+  }
+
+  getAdressId() {
+    return this.id
   }
 }
