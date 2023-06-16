@@ -23,4 +23,12 @@ export class LocalRepositoryMemory implements LocalRepository {
     }
     return local
   }
+
+  async findBySlug(slug: string): Promise<Local> {
+    const local = this.locals.find((local) => local.slug === slug)
+    if (!local) {
+      throw new Error("Local not found")
+    }
+    return local
+  }
 }
