@@ -1,10 +1,10 @@
 import { expect, test } from "vitest"
 import { CityRepositoryMemory } from "@/infra/repositories/memory"
 import { SaveCity } from "@/application/usecases"
-import { GetCityById } from "@/application/usecases"
+import { GetCityBySlug } from "@/application/usecases"
 import { City } from "@/domain/entities"
 
-test("Deve buscar uma cidade por id com sucesso", async () => {
+test("Deve buscar uma cidade por slug com sucesso", async () => {
   const cityRepository = new CityRepositoryMemory()
   const input = {
     name: "Rio de Janeiro",
@@ -15,14 +15,14 @@ test("Deve buscar uma cidade por id com sucesso", async () => {
   const saveCity = new SaveCity(cityRepository)
   await saveCity.execute(input)
   const city = (await cityRepository.findByName(input.name)) as City
-  const getCityById = new GetCityById(cityRepository)
-  const cityById = await getCityById.execute({ id: city.getCityId() })
-  expect(cityById.name).toStrictEqual(input.name)
-  expect(cityById.images).toStrictEqual(input.images)
-  expect(cityById.description).toStrictEqual(input.description)
+  const getCityBySlug = new GetCityBySlug(cityRepository)
+  const cityBySlug = await getCityBySlug.execute({ slug: city.slug })
+  expect(cityBySlug.name).toStrictEqual(input.name)
+  expect(cityBySlug.images).toStrictEqual(input.images)
+  expect(cityBySlug.description).toStrictEqual(input.description)
 })
 
-test("Deve buscar uma cidade com id inexistente", async () => {
+test("Deve buscar uma cidade com slug inexistente", async () => {
   const cityRepository = new CityRepositoryMemory()
   const input = {
     name: "Rio de Janeiro",
@@ -32,8 +32,8 @@ test("Deve buscar uma cidade com id inexistente", async () => {
   }
   const saveCity = new SaveCity(cityRepository)
   await saveCity.execute(input)
-  const getCityById = new GetCityById(cityRepository)
+  const getCityBySlug = new GetCityBySlug(cityRepository)
   expect(
-    async () => await getCityById.execute({ id: "1" })
+    async () => await getCityBySlug.execute({ slug: "rio" })
   ).rejects.toThrowError(new Error("City not found"))
 })
