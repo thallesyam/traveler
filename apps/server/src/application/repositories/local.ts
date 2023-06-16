@@ -5,4 +5,5 @@ export interface LocalRepository {
   findAll(): Promise<Local[]>
   findById(id: string): Promise<Local>
   findBySlug(slug: string): Promise<Local>
+  update(id: string, data: Local): Promise<void>
 }

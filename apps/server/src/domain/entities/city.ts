@@ -45,6 +45,10 @@ export class City {
     return this.locals
   }
 
+  removeLocal(localId: string) {
+    this.locals = this.locals.filter((local) => local.getLocalId() !== localId)
+  }
+
   setLocal(local: Local) {
     this.locals.push(local)
   }

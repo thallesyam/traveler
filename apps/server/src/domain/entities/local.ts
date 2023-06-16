@@ -53,4 +53,8 @@ export class Local {
   getLocalId() {
     return this.id
   }
+
+  setLocalId(id: string) {
+    this.id = id
+  }
 }

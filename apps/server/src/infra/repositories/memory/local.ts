@@ -31,4 +31,14 @@ export class LocalRepositoryMemory implements LocalRepository {
     }
     return local
   }
+
+  async update(id: string, data: Local): Promise<void> {
+    this.locals = this.locals.map((local) => {
+      if (local.getLocalId() === id) {
+        return data
+      }
+
+      return local
+    })
+  }
 }
