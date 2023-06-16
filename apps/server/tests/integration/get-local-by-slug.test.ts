@@ -1,7 +1,7 @@
 import { expect, test } from "vitest"
 import { Address, City, Local } from "@/domain/entities"
 import { LocalRepositoryMemory } from "@/infra/repositories/memory"
-import { GetLocalById } from "@/application/usecases"
+import { GetLocalBySlug } from "@/application/usecases"
 
 const mockCity = {
   name: "Rio de Janeiro",
@@ -14,7 +14,7 @@ const mockCity = {
   que cativa os sentidos e deixa memórias inesquecíveis.`,
 }
 
-test("Deve buscar um local por id", async () => {
+test("Deve buscar um local por slug", async () => {
   const city = new City(mockCity.name, mockCity.images, mockCity.description)
   const address = new Address(
     "08225260",
@@ -74,8 +74,8 @@ test("Deve buscar um local por id", async () => {
   )
   const localRepository = new LocalRepositoryMemory()
   await localRepository.save(input)
-  const getLocalById = new GetLocalById(localRepository)
-  const local = await getLocalById.execute({ id: input.getLocalId() })
+  const getLocalBySlug = new GetLocalBySlug(localRepository)
+  const local = await getLocalBySlug.execute({ slug: input.slug })
   expect(local.name).toEqual("Doce & Companhia")
   expect(local.description).toEqual(
     "O melhor lugar da cidade para você tomar um bom café. Fatias de tortas artesanais, bolos, lanches e biscoitos caseiros."
@@ -86,7 +86,7 @@ test("Deve buscar um local por id", async () => {
   expect(local.categoryId).toEqual("fake-category-id")
 })
 
-test("Deve tentar buscar um local com id inválido", async () => {
+test("Deve tentar buscar um local com slug inválido", async () => {
   const city = new City(mockCity.name, mockCity.images, mockCity.description)
   const address = new Address(
     "08225260",
@@ -96,58 +96,20 @@ test("Deve tentar buscar um local com id inválido", async () => {
     { lat: 10, long: 10 }
   )
 
-  const openingHours = [
-    {
-      weekDay: 0,
-      open: null,
-      close: null,
-    },
-    {
-      weekDay: 1,
-      open: new Date().setHours(8, 0, 0, 0) / 1000,
-      close: new Date().setHours(18, 0, 0, 0) / 1000,
-    },
-    {
-      weekDay: 2,
-      open: new Date().setHours(8, 0, 0, 0) / 1000,
-      close: new Date().setHours(18, 0, 0, 0) / 1000,
-    },
-    {
-      weekDay: 3,
-      open: new Date().setHours(8, 0, 0, 0) / 1000,
-      close: new Date().setHours(18, 0, 0, 0) / 1000,
-    },
-    {
-      weekDay: 4,
-      open: new Date().setHours(8, 0, 0, 0) / 1000,
-      close: new Date().setHours(18, 0, 0, 0) / 1000,
-    },
-    {
-      weekDay: 5,
-      open: new Date().setHours(8, 0, 0, 0) / 1000,
-      close: new Date().setHours(18, 0, 0, 0) / 1000,
-    },
-    {
-      weekDay: 6,
-      open: new Date().setHours(8, 0, 0, 0) / 1000,
-      close: new Date().setHours(18, 0, 0, 0) / 1000,
-    },
-  ]
-
   const input = new Local(
     "Doce & Companhia",
     "O melhor lugar da cidade para você tomar um bom café. Fatias de tortas artesanais, bolos, lanches e biscoitos caseiros.",
     ["fake-image"],
     address,
-    openingHours,
+    undefined,
     city,
     "fake-category-id",
     undefined
   )
   const localRepository = new LocalRepositoryMemory()
   await localRepository.save(input)
-  const getLocalById = new GetLocalById(localRepository)
-  expect(async () => await getLocalById.execute({ id: "" })).rejects.toThrow(
-    new Error("Local not found")
-  )
+  const getLocalBySlug = new GetLocalBySlug(localRepository)
+  expect(
+    async () => await getLocalBySlug.execute({ slug: "doce-e-companhia" })
+  ).rejects.toThrow(new Error("Local not found"))
 })
