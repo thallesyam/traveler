@@ -72,9 +72,20 @@ test("Deve editar um local com sucesso utilizando os horarios de atendimento", a
     cityId: city.getCityId(),
     categoryId: "fake-category-id",
   }
+  const inputLocal1 = {
+    name: "Doce e Companhia",
+    description:
+      "O melhor lugar da cidade para você tomar um bom café. Fatias de tortas artesanais, bolos, lanches e biscoitos caseiros.",
+    images: ["fake-image"],
+    address,
+    openingHours: undefined,
+    cityId: city.getCityId(),
+    categoryId: "fake-category-id",
+  }
   const localRepository = new LocalRepositoryMemory()
   const saveLocal = new SaveLocal(cityRepository, localRepository)
   await saveLocal.execute(inputLocal)
+  await saveLocal.execute(inputLocal1)
   const local = await localRepository.findBySlug("doce-companhia")
   const newLocalData = {
     openingHours: mockOpeningHours,
