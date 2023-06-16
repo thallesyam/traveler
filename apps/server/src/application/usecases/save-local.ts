@@ -44,11 +44,13 @@ type Input = {
   description: string
   images: string[]
   address: Address
-  openingHours: {
-    weekDay: number
-    open: number | null
-    close: number | null
-  }[]
+  openingHours:
+    | undefined
+    | {
+        weekDay: number
+        open: number | null
+        close: number | null
+      }[]
   cityId: string
   categoryId: string
   observation?: string
