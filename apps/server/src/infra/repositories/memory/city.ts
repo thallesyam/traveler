@@ -45,4 +45,13 @@ export class CityRepositoryMemory implements CityRepository {
   async delete(id: string): Promise<void> {
     this.cities = this.cities.filter((city) => city.getCityId() !== id)
   }
+
+  async findBySlug(slug: string): Promise<City> {
+    const city = this.cities.find((city) => city.slug === slug)
+
+    if (!city) {
+      throw new Error("City not found")
+    }
+    return city
+  }
 }
