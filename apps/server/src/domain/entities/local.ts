@@ -1,4 +1,4 @@
-import { Address, City } from "@/domain/entities"
+import { Address } from "@/domain/entities"
 import { randomUUID } from "crypto"
 
 type IHours = {
@@ -10,7 +10,7 @@ type IHours = {
 export class Local {
   private id: string
   readonly slug: string
-  createdAt = new Date()
+  readonly createdAt = new Date()
 
   constructor(
     readonly name: string,

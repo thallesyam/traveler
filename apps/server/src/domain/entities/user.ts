@@ -1,7 +1,7 @@
 import { Password } from "@/domain/entities"
 
 export class User {
-  createdAt = new Date()
+  readonly createdAt = new Date()
 
   constructor(
     readonly name: string,

@@ -5,6 +5,7 @@ export class City {
   private id: string
   private locals: Local[]
   readonly slug: string
+  readonly createdAt = new Date()
 
   constructor(
     readonly name: string,
