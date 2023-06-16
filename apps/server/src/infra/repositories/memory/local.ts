@@ -15,4 +15,12 @@ export class LocalRepositoryMemory implements LocalRepository {
   async findAll(): Promise<Local[]> {
     return this.locals
   }
+
+  async findById(id: string): Promise<Local> {
+    const local = this.locals.find((local) => local.getLocalId() === id)
+    if (!local) {
+      throw new Error("Local not found")
+    }
+    return local
+  }
 }

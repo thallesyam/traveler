@@ -1,4 +1,5 @@
 import { Address, City } from "@/domain/entities"
+import { randomUUID } from "crypto"
 
 type IHours = {
   weekDay: number
@@ -7,6 +8,7 @@ type IHours = {
 }
 
 export class Local {
+  private id: string
   createdAt = new Date()
 
   constructor(
@@ -19,6 +21,8 @@ export class Local {
     readonly categoryId: string,
     readonly observation?: string
   ) {
+    this.id = this.generateLocalId()
+
     if (
       !name ||
       !description ||
@@ -29,5 +33,14 @@ export class Local {
     ) {
       throw new Error("Insufficient information to create local")
     }
+  }
+
+  private generateLocalId() {
+    const uuid = randomUUID()
+    return uuid
+  }
+
+  getLocalId() {
+    return this.id
   }
 }
