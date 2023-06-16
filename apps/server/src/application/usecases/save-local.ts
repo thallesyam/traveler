@@ -26,7 +26,7 @@ export class SaveLocal {
       input.images,
       input.address,
       input.openingHours,
-      city,
+      input.cityId,
       input.categoryId,
       input.observation
     )

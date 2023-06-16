@@ -68,7 +68,7 @@ test("Deve buscar um local por id", async () => {
     ["fake-image"],
     address,
     openingHours,
-    city,
+    city.getCityId(),
     "fake-category-id",
     undefined
   )
@@ -82,7 +82,7 @@ test("Deve buscar um local por id", async () => {
   )
   expect(local.images).toEqual(["fake-image"])
   expect(local.address).toStrictEqual(address)
-  expect(local.city).toStrictEqual(city)
+  expect(local.cityId).toStrictEqual(city.getCityId())
   expect(local.categoryId).toEqual("fake-category-id")
 })
 
@@ -140,7 +140,7 @@ test("Deve tentar buscar um local com id inválido", async () => {
     ["fake-image"],
     address,
     openingHours,
-    city,
+    city.getCityId(),
     "fake-category-id",
     undefined
   )

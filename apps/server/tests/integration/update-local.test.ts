@@ -79,7 +79,7 @@ test("Deve editar um local com sucesso utilizando os horarios de atendimento", a
   const newLocalData = {
     openingHours: mockOpeningHours,
   }
-  const updateLocal = new UpdateLocal(localRepository)
+  const updateLocal = new UpdateLocal(localRepository, cityRepository)
   await updateLocal.execute({ id: local.getLocalId(), data: newLocalData })
   const localUpdated = await localRepository.findById(local.getLocalId())
   expect(localUpdated.openingHours).toEqual(mockOpeningHours)
@@ -121,7 +121,7 @@ test("Deve editar um local com sucesso utilizando o nome", async () => {
   const newLocalData = {
     name: "Doce e companhia",
   }
-  const updateLocal = new UpdateLocal(localRepository)
+  const updateLocal = new UpdateLocal(localRepository, cityRepository)
   await updateLocal.execute({ id: local.getLocalId(), data: newLocalData })
   const localUpdated = await localRepository.findById(local.getLocalId())
   expect(localUpdated.name).toEqual("Doce e companhia")
@@ -163,7 +163,7 @@ test("Deve tentar editar um local com id inválido", async () => {
   const newLocalData = {
     openingHours: mockOpeningHours,
   }
-  const updateLocal = new UpdateLocal(localRepository)
+  const updateLocal = new UpdateLocal(localRepository, cityRepository)
 
   expect(
     async () => await updateLocal.execute({ id: "fake-id", data: newLocalData })

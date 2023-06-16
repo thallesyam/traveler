@@ -18,7 +18,7 @@ export class Local {
     readonly images: string[],
     readonly address: Address,
     readonly openingHours: IHours[] | undefined,
-    readonly city: City,
+    readonly cityId: string,
     readonly categoryId: string,
     readonly observation?: string
   ) {
@@ -30,7 +30,7 @@ export class Local {
       !description ||
       !images.length ||
       !address ||
-      !city ||
+      !cityId ||
       !categoryId
     ) {
       throw new Error("Insufficient information to create local")

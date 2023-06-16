@@ -65,7 +65,7 @@ test("Deve criar um local válido", async () => {
     ["fake-image"],
     address,
     openingHours,
-    city,
+    city.getCityId(),
     "fake-category-id",
     undefined
   )
@@ -75,7 +75,7 @@ test("Deve criar um local válido", async () => {
   )
   expect(local.images).toEqual(["fake-image"])
   expect(local.address).toStrictEqual(address)
-  expect(local.city).toStrictEqual(city)
+  expect(local.cityId).toStrictEqual(city.getCityId())
   expect(local.categoryId).toEqual("fake-category-id")
   expect(local.slug).toEqual("doce-companhia")
 })
@@ -96,7 +96,7 @@ test("Deve tentar criar um local inválido", async () => {
       [],
       address,
       undefined,
-      city,
+      city.getCityId(),
       "fake-category-id",
       undefined
     )
