@@ -9,6 +9,7 @@ type IHours = {
 
 export class Local {
   private id: string
+  readonly slug: string
   createdAt = new Date()
 
   constructor(
@@ -22,6 +23,7 @@ export class Local {
     readonly observation?: string
   ) {
     this.id = this.generateLocalId()
+    this.slug = this.generateLocalSlug()
 
     if (
       !name ||
@@ -38,6 +40,14 @@ export class Local {
   private generateLocalId() {
     const uuid = randomUUID()
     return uuid
+  }
+
+  private generateLocalSlug() {
+    return this.name
+      .toLowerCase()
+      .replace(/[^a-z0-9\-]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .replace(/--+/g, "-")
   }
 
   getLocalId() {

@@ -17,6 +17,7 @@ test("Deve criar uma cidade válida", async () => {
   expect(city.name).toBe(mockCity.name)
   expect(city.images).toBe(mockCity.images)
   expect(city.description).toBe(mockCity.description)
+  expect(city.slug).toBe("rio-de-janeiro")
 })
 
 test("Deve tentar criar uma cidade informação", async () => {

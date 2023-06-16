@@ -4,6 +4,7 @@ import { Local } from "@/domain/entities"
 export class City {
   private id: string
   private locals: Local[]
+  readonly slug: string
 
   constructor(
     readonly name: string,
@@ -11,6 +12,7 @@ export class City {
     readonly description: string
   ) {
     this.id = this.generateCityId()
+    this.slug = this.generateCitySlug()
     this.locals = []
 
     if (!name || !images.length || !description) {
@@ -21,6 +23,14 @@ export class City {
   private generateCityId() {
     const uuid = randomUUID()
     return uuid
+  }
+
+  private generateCitySlug() {
+    return this.name
+      .toLowerCase()
+      .replace(/[^a-z0-9\-]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .replace(/--+/g, "-")
   }
 
   getCityId() {

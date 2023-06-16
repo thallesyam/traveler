@@ -77,6 +77,7 @@ test("Deve criar um local válido", async () => {
   expect(local.address).toStrictEqual(address)
   expect(local.city).toStrictEqual(city)
   expect(local.categoryId).toEqual("fake-category-id")
+  expect(local.slug).toEqual("doce-companhia")
 })
 
 test("Deve tentar criar um local inválido", async () => {
