@@ -31,4 +31,14 @@ export class CategoryRepositoryMemory implements CategoryRepository {
     }
     return category
   }
+
+  async update(id: string, data: Category): Promise<void> {
+    this.categories = this.categories.map((category) => {
+      if (category.getCategoryId() === id) {
+        return data
+      }
+
+      return category
+    })
+  }
 }

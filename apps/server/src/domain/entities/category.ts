@@ -22,8 +22,16 @@ export class Category {
     return this.id
   }
 
+  setCategoryId(id: string) {
+    this.id = id
+  }
+
   getLocalsInCategory() {
     return this.locals
+  }
+
+  removeLocal(localId: string) {
+    this.locals = this.locals.filter((local) => local.localId !== localId)
   }
 
   setLocalInCategory(localId: string, cityId: string) {
