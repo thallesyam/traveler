@@ -1,13 +1,20 @@
 import { expect, test } from "vitest"
 import {
+  CategoryRepositoryMemory,
   CityRepositoryMemory,
   LocalRepositoryMemory,
 } from "@/infra/repositories/memory"
-import { SaveCity, SaveLocal, DeleteLocal } from "@/application/usecases"
-import { Address, City } from "@/domain/entities"
+import {
+  SaveCity,
+  SaveLocal,
+  DeleteLocal,
+  SaveCategory,
+} from "@/application/usecases"
+import { Address, Category, City } from "@/domain/entities"
 
 test("Deve deletar um local com sucesso", async () => {
   const cityRepository = new CityRepositoryMemory()
+  const categoryRepository = new CategoryRepositoryMemory()
   const address = new Address(
     "08225260",
     "Rua Francisco da cunha",
@@ -21,6 +28,11 @@ test("Deve deletar um local com sucesso", async () => {
     description:
       "O Rio de Janeiro é uma cidade deslumbrante com paisagens de tirar o fôlego.",
   }
+  const saveCategory = new SaveCategory(categoryRepository)
+  await saveCategory.execute({ image: "fake-image", name: "Pontos turisticos" })
+  const category = (await categoryRepository.findByName(
+    "Pontos turisticos"
+  )) as Category
   const saveCity = new SaveCity(cityRepository)
   await saveCity.execute(input)
   const city = (await cityRepository.findByName(input.name)) as City
@@ -32,7 +44,7 @@ test("Deve deletar um local com sucesso", async () => {
     address,
     openingHours: undefined,
     cityId: city.getCityId(),
-    categoryId: "fake-category-id",
+    categoryId: category.getCategoryId(),
   }
   const inputLocal1 = {
     name: "Doce e Companhia",
@@ -42,10 +54,14 @@ test("Deve deletar um local com sucesso", async () => {
     address,
     openingHours: undefined,
     cityId: city.getCityId(),
-    categoryId: "fake-category-id",
+    categoryId: category.getCategoryId(),
   }
   const localRepository = new LocalRepositoryMemory()
-  const saveLocal = new SaveLocal(cityRepository, localRepository)
+  const saveLocal = new SaveLocal(
+    cityRepository,
+    categoryRepository,
+    localRepository
+  )
   await saveLocal.execute(inputLocal)
   await saveLocal.execute(inputLocal1)
   const local = await localRepository.findBySlug("doce-companhia")
@@ -57,8 +73,9 @@ test("Deve deletar um local com sucesso", async () => {
   expect(localByCity.getLocals()).toHaveLength(1)
 })
 
-test("Deve criar um local com sucesso", async () => {
+test("Deve tentar deletar um local com id inválido", async () => {
   const cityRepository = new CityRepositoryMemory()
+  const categoryRepository = new CategoryRepositoryMemory()
   const address = new Address(
     "08225260",
     "Rua Francisco da cunha",
@@ -72,6 +89,11 @@ test("Deve criar um local com sucesso", async () => {
     description:
       "O Rio de Janeiro é uma cidade deslumbrante com paisagens de tirar o fôlego.",
   }
+  const saveCategory = new SaveCategory(categoryRepository)
+  await saveCategory.execute({ image: "fake-image", name: "Pontos turisticos" })
+  const category = (await categoryRepository.findByName(
+    "Pontos turisticos"
+  )) as Category
   const saveCity = new SaveCity(cityRepository)
   await saveCity.execute(input)
   const city = (await cityRepository.findByName(input.name)) as City
@@ -83,10 +105,14 @@ test("Deve criar um local com sucesso", async () => {
     address,
     openingHours: undefined,
     cityId: city.getCityId(),
-    categoryId: "fake-category-id",
+    categoryId: category.getCategoryId(),
   }
   const localRepository = new LocalRepositoryMemory()
-  const saveLocal = new SaveLocal(cityRepository, localRepository)
+  const saveLocal = new SaveLocal(
+    cityRepository,
+    categoryRepository,
+    localRepository
+  )
   await saveLocal.execute(inputLocal)
   const deleteLocal = new DeleteLocal(cityRepository, localRepository)
   expect(

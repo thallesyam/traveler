@@ -22,11 +22,11 @@ export class Category {
     return this.id
   }
 
-  getCategories() {
+  getLocalsInCategory() {
     return this.locals
   }
 
-  setCategory(localId: string, cityId: string) {
+  setLocalInCategory(localId: string, cityId: string) {
     this.locals.push({ localId, cityId })
   }
 }

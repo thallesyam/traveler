@@ -5,8 +5,8 @@ test("Deve criar uma categoria válida", async () => {
   const category = new Category("Pontos Turísticos", "fake-images")
   expect(category.name).toEqual("Pontos Turísticos")
   expect(category.image).toEqual("fake-images")
-  expect(category.setCategory("fake-id", "fake-id"))
-  expect(category.getCategories()).toHaveLength(1)
+  expect(category.setLocalInCategory("fake-id", "fake-id"))
+  expect(category.getLocalsInCategory()).toHaveLength(1)
   expect(category.getCategoryId()).toBeTruthy()
 })
 

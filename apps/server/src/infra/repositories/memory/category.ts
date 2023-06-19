@@ -20,4 +20,15 @@ export class CategoryRepositoryMemory implements CategoryRepository {
     const category = this.categories.find((category) => category.name === name)
     return category
   }
+
+  async findById(id: string): Promise<Category> {
+    const category = this.categories.find(
+      (category) => category.getCategoryId() === id
+    )
+
+    if (!category) {
+      throw new Error("Category not found")
+    }
+    return category
+  }
 }

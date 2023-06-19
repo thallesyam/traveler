@@ -1,15 +1,20 @@
-import { CityRepository } from "@/application/repositories"
 import { Address, Local } from "@/domain/entities"
-import { LocalRepository } from "../repositories/local"
+import {
+  CategoryRepository,
+  CityRepository,
+  LocalRepository,
+} from "@/application/repositories"
 
 export class SaveLocal {
   constructor(
     readonly cityRepository: CityRepository,
+    readonly categoryRepository: CategoryRepository,
     readonly localRepository: LocalRepository
   ) {}
 
   async execute(input: Input): Promise<void> {
     const city = await this.cityRepository.findById(input.cityId)
+    const category = await this.categoryRepository.findById(input.categoryId)
     const localAlreadyAddInCity = city
       .getLocals()
       .find((cityLocal) => cityLocal.name === input.name)
@@ -17,8 +22,6 @@ export class SaveLocal {
     if (localAlreadyAddInCity) {
       throw new Error("Local with same name already register")
     }
-
-    // Implementar a validação de categoria
 
     const local = new Local(
       input.name,
@@ -32,6 +35,7 @@ export class SaveLocal {
     )
 
     city.setLocal(local)
+    category.setLocalInCategory(local.getLocalId(), city.getCityId())
 
     await this.localRepository.save(local)
 

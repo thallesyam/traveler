@@ -1,10 +1,16 @@
 import { expect, test } from "vitest"
 import {
+  CategoryRepositoryMemory,
   CityRepositoryMemory,
   LocalRepositoryMemory,
 } from "@/infra/repositories/memory"
-import { SaveCity, SaveLocal, UpdateLocal } from "@/application/usecases"
-import { Address, City } from "@/domain/entities"
+import {
+  SaveCategory,
+  SaveCity,
+  SaveLocal,
+  UpdateLocal,
+} from "@/application/usecases"
+import { Address, Category, City } from "@/domain/entities"
 
 const mockOpeningHours = [
   {
@@ -46,6 +52,7 @@ const mockOpeningHours = [
 
 test("Deve editar um local com sucesso utilizando os horarios de atendimento", async () => {
   const cityRepository = new CityRepositoryMemory()
+  const categoryRepository = new CategoryRepositoryMemory()
   const address = new Address(
     "08225260",
     "Rua Francisco da cunha",
@@ -59,6 +66,11 @@ test("Deve editar um local com sucesso utilizando os horarios de atendimento", a
     description:
       "O Rio de Janeiro é uma cidade deslumbrante com paisagens de tirar o fôlego.",
   }
+  const saveCategory = new SaveCategory(categoryRepository)
+  await saveCategory.execute({ image: "fake-image", name: "Pontos turisticos" })
+  const category = (await categoryRepository.findByName(
+    "Pontos turisticos"
+  )) as Category
   const saveCity = new SaveCity(cityRepository)
   await saveCity.execute(input)
   const city = (await cityRepository.findByName(input.name)) as City
@@ -70,7 +82,7 @@ test("Deve editar um local com sucesso utilizando os horarios de atendimento", a
     address,
     openingHours: undefined,
     cityId: city.getCityId(),
-    categoryId: "fake-category-id",
+    categoryId: category.getCategoryId(),
   }
   const inputLocal1 = {
     name: "Doce e Companhia",
@@ -80,10 +92,14 @@ test("Deve editar um local com sucesso utilizando os horarios de atendimento", a
     address,
     openingHours: undefined,
     cityId: city.getCityId(),
-    categoryId: "fake-category-id",
+    categoryId: category.getCategoryId(),
   }
   const localRepository = new LocalRepositoryMemory()
-  const saveLocal = new SaveLocal(cityRepository, localRepository)
+  const saveLocal = new SaveLocal(
+    cityRepository,
+    categoryRepository,
+    localRepository
+  )
   await saveLocal.execute(inputLocal)
   await saveLocal.execute(inputLocal1)
   const local = await localRepository.findBySlug("doce-companhia")
@@ -99,6 +115,7 @@ test("Deve editar um local com sucesso utilizando os horarios de atendimento", a
 
 test("Deve editar um local com sucesso utilizando o nome", async () => {
   const cityRepository = new CityRepositoryMemory()
+  const categoryRepository = new CategoryRepositoryMemory()
   const address = new Address(
     "08225260",
     "Rua Francisco da cunha",
@@ -112,6 +129,11 @@ test("Deve editar um local com sucesso utilizando o nome", async () => {
     description:
       "O Rio de Janeiro é uma cidade deslumbrante com paisagens de tirar o fôlego.",
   }
+  const saveCategory = new SaveCategory(categoryRepository)
+  await saveCategory.execute({ image: "fake-image", name: "Pontos turisticos" })
+  const category = (await categoryRepository.findByName(
+    "Pontos turisticos"
+  )) as Category
   const saveCity = new SaveCity(cityRepository)
   await saveCity.execute(input)
   const city = (await cityRepository.findByName(input.name)) as City
@@ -123,10 +145,14 @@ test("Deve editar um local com sucesso utilizando o nome", async () => {
     address,
     openingHours: undefined,
     cityId: city.getCityId(),
-    categoryId: "fake-category-id",
+    categoryId: category.getCategoryId(),
   }
   const localRepository = new LocalRepositoryMemory()
-  const saveLocal = new SaveLocal(cityRepository, localRepository)
+  const saveLocal = new SaveLocal(
+    cityRepository,
+    categoryRepository,
+    localRepository
+  )
   await saveLocal.execute(inputLocal)
   const local = await localRepository.findBySlug("doce-companhia")
   const newLocalData = {
@@ -142,6 +168,7 @@ test("Deve editar um local com sucesso utilizando o nome", async () => {
 
 test("Deve tentar editar um local com id inválido", async () => {
   const cityRepository = new CityRepositoryMemory()
+  const categoryRepository = new CategoryRepositoryMemory()
   const address = new Address(
     "08225260",
     "Rua Francisco da cunha",
@@ -155,6 +182,11 @@ test("Deve tentar editar um local com id inválido", async () => {
     description:
       "O Rio de Janeiro é uma cidade deslumbrante com paisagens de tirar o fôlego.",
   }
+  const saveCategory = new SaveCategory(categoryRepository)
+  await saveCategory.execute({ image: "fake-image", name: "Pontos turisticos" })
+  const category = (await categoryRepository.findByName(
+    "Pontos turisticos"
+  )) as Category
   const saveCity = new SaveCity(cityRepository)
   await saveCity.execute(input)
   const city = (await cityRepository.findByName(input.name)) as City
@@ -166,10 +198,14 @@ test("Deve tentar editar um local com id inválido", async () => {
     address,
     openingHours: undefined,
     cityId: city.getCityId(),
-    categoryId: "fake-category-id",
+    categoryId: category.getCategoryId(),
   }
   const localRepository = new LocalRepositoryMemory()
-  const saveLocal = new SaveLocal(cityRepository, localRepository)
+  const saveLocal = new SaveLocal(
+    cityRepository,
+    categoryRepository,
+    localRepository
+  )
   await saveLocal.execute(inputLocal)
   const newLocalData = {
     openingHours: mockOpeningHours,

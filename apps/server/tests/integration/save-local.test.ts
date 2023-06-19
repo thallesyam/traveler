@@ -1,10 +1,11 @@
 import { expect, test } from "vitest"
 import {
+  CategoryRepositoryMemory,
   CityRepositoryMemory,
   LocalRepositoryMemory,
 } from "@/infra/repositories/memory"
-import { SaveCity, SaveLocal } from "@/application/usecases"
-import { Address, City } from "@/domain/entities"
+import { SaveCategory, SaveCity, SaveLocal } from "@/application/usecases"
+import { Address, Category, City } from "@/domain/entities"
 
 const mockOpeningHours = [
   {
@@ -46,6 +47,7 @@ const mockOpeningHours = [
 
 test("Deve criar um local com sucesso", async () => {
   const cityRepository = new CityRepositoryMemory()
+  const categoryRepository = new CategoryRepositoryMemory()
   const address = new Address(
     "08225260",
     "Rua Francisco da cunha",
@@ -59,6 +61,11 @@ test("Deve criar um local com sucesso", async () => {
     description:
       "O Rio de Janeiro é uma cidade deslumbrante com paisagens de tirar o fôlego.",
   }
+  const saveCategory = new SaveCategory(categoryRepository)
+  await saveCategory.execute({ image: "fake-image", name: "Pontos turisticos" })
+  const category = (await categoryRepository.findByName(
+    "Pontos turisticos"
+  )) as Category
   const saveCity = new SaveCity(cityRepository)
   await saveCity.execute(input)
   const city = (await cityRepository.findByName(input.name)) as City
@@ -70,10 +77,14 @@ test("Deve criar um local com sucesso", async () => {
     address,
     openingHours: mockOpeningHours,
     cityId: city.getCityId(),
-    categoryId: "fake-category-id",
+    categoryId: category.getCategoryId(),
   }
   const localRepository = new LocalRepositoryMemory()
-  const saveLocal = new SaveLocal(cityRepository, localRepository)
+  const saveLocal = new SaveLocal(
+    cityRepository,
+    categoryRepository,
+    localRepository
+  )
   await saveLocal.execute(inputLocal)
   const locals = await localRepository.findAll()
   expect(locals).toHaveLength(1)
@@ -87,6 +98,7 @@ test("Deve criar um local com sucesso", async () => {
 
 test("Deve criar um local com sucesso", async () => {
   const cityRepository = new CityRepositoryMemory()
+  const categoryRepository = new CategoryRepositoryMemory()
   const address = new Address(
     "08225260",
     "Rua Francisco da cunha",
@@ -100,6 +112,11 @@ test("Deve criar um local com sucesso", async () => {
     description:
       "O Rio de Janeiro é uma cidade deslumbrante com paisagens de tirar o fôlego.",
   }
+  const saveCategory = new SaveCategory(categoryRepository)
+  await saveCategory.execute({ image: "fake-image", name: "Pontos turisticos" })
+  const category = (await categoryRepository.findByName(
+    "Pontos turisticos"
+  )) as Category
   const saveCity = new SaveCity(cityRepository)
   await saveCity.execute(input)
   const city = (await cityRepository.findByName(input.name)) as City
@@ -111,10 +128,14 @@ test("Deve criar um local com sucesso", async () => {
     address,
     openingHours: mockOpeningHours,
     cityId: city.getCityId(),
-    categoryId: "fake-category-id",
+    categoryId: category.getCategoryId(),
   }
   const localRepository = new LocalRepositoryMemory()
-  const saveLocal = new SaveLocal(cityRepository, localRepository)
+  const saveLocal = new SaveLocal(
+    cityRepository,
+    categoryRepository,
+    localRepository
+  )
   await saveLocal.execute(inputLocal)
   expect(async () => await saveLocal.execute(inputLocal)).rejects.toThrow(
     new Error("Local with same name already register")
