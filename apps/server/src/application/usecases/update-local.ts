@@ -1,5 +1,9 @@
 import { Address, Local } from "@/domain/entities"
-import { CityRepository, LocalRepository } from "@/application/repositories"
+import {
+  CategoryRepository,
+  CityRepository,
+  LocalRepository,
+} from "@/application/repositories"
 
 type IHours = {
   weekDay: number
@@ -10,7 +14,8 @@ type IHours = {
 export class UpdateLocal {
   constructor(
     readonly localRepository: LocalRepository,
-    readonly cityRepository: CityRepository
+    readonly cityRepository: CityRepository,
+    readonly categoryRepository: CategoryRepository
   ) {}
 
   async execute(input: Input): Promise<void> {
@@ -31,6 +36,18 @@ export class UpdateLocal {
     local.setLocalId(actualLocal.getLocalId())
 
     await this.localRepository.update(input.id, local)
+
+    if (
+      input.data?.categoryId &&
+      input.data?.categoryId !== actualLocal.categoryId
+    ) {
+      const category = await this.categoryRepository.findById(
+        input.data?.categoryId
+      )
+      category.removeLocal(actualLocal.categoryId)
+      category.setLocalInCategory(local.getLocalId(), city.getCityId())
+    }
+
     city.removeLocal(input.id)
     city.setLocal(local)
 

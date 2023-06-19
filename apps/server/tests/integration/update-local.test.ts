@@ -106,7 +106,11 @@ test("Deve editar um local com sucesso utilizando os horarios de atendimento", a
   const newLocalData = {
     openingHours: mockOpeningHours,
   }
-  const updateLocal = new UpdateLocal(localRepository, cityRepository)
+  const updateLocal = new UpdateLocal(
+    localRepository,
+    cityRepository,
+    categoryRepository
+  )
   await updateLocal.execute({ id: local.getLocalId(), data: newLocalData })
   const localUpdated = await localRepository.findById(local.getLocalId())
   expect(localUpdated.openingHours).toEqual(mockOpeningHours)
@@ -158,11 +162,73 @@ test("Deve editar um local com sucesso utilizando o nome", async () => {
   const newLocalData = {
     name: "Doce e companhia",
   }
-  const updateLocal = new UpdateLocal(localRepository, cityRepository)
+  const updateLocal = new UpdateLocal(
+    localRepository,
+    cityRepository,
+    categoryRepository
+  )
   await updateLocal.execute({ id: local.getLocalId(), data: newLocalData })
   const localUpdated = await localRepository.findById(local.getLocalId())
   expect(localUpdated.name).toEqual("Doce e companhia")
   expect(localUpdated.slug).toEqual("doce-e-companhia")
+  expect(localUpdated.getLocalId()).toEqual(local.getLocalId())
+})
+
+test("Deve editar um local com sucesso utilizando o id da categoria", async () => {
+  const cityRepository = new CityRepositoryMemory()
+  const categoryRepository = new CategoryRepositoryMemory()
+  const address = new Address(
+    "08225260",
+    "Rua Francisco da cunha",
+    "Jardim Itapemirim",
+    "533",
+    { lat: 10, long: 10 }
+  )
+  const input = {
+    name: "Rio de Janeiro",
+    images: ["fake-image"],
+    description:
+      "O Rio de Janeiro é uma cidade deslumbrante com paisagens de tirar o fôlego.",
+  }
+  const saveCategory = new SaveCategory(categoryRepository)
+  await saveCategory.execute({ image: "fake-image", name: "Pontos turisticos" })
+  await saveCategory.execute({ image: "fake-image", name: "Eventos" })
+  const category = (await categoryRepository.findByName(
+    "Pontos turisticos"
+  )) as Category
+  const category1 = (await categoryRepository.findByName("Eventos")) as Category
+  const saveCity = new SaveCity(cityRepository)
+  await saveCity.execute(input)
+  const city = (await cityRepository.findByName(input.name)) as City
+  const inputLocal = {
+    name: "Doce & Companhia",
+    description:
+      "O melhor lugar da cidade para você tomar um bom café. Fatias de tortas artesanais, bolos, lanches e biscoitos caseiros.",
+    images: ["fake-image"],
+    address,
+    openingHours: undefined,
+    cityId: city.getCityId(),
+    categoryId: category.getCategoryId(),
+  }
+  const localRepository = new LocalRepositoryMemory()
+  const saveLocal = new SaveLocal(
+    cityRepository,
+    categoryRepository,
+    localRepository
+  )
+  await saveLocal.execute(inputLocal)
+  const local = await localRepository.findBySlug("doce-companhia")
+  const newLocalData = {
+    categoryId: category1.getCategoryId(),
+  }
+  const updateLocal = new UpdateLocal(
+    localRepository,
+    cityRepository,
+    categoryRepository
+  )
+  await updateLocal.execute({ id: local.getLocalId(), data: newLocalData })
+  const localUpdated = await localRepository.findById(local.getLocalId())
+  expect(localUpdated.categoryId).toEqual(category1.getCategoryId())
   expect(localUpdated.getLocalId()).toEqual(local.getLocalId())
 })
 
@@ -210,7 +276,11 @@ test("Deve tentar editar um local com id inválido", async () => {
   const newLocalData = {
     openingHours: mockOpeningHours,
   }
-  const updateLocal = new UpdateLocal(localRepository, cityRepository)
+  const updateLocal = new UpdateLocal(
+    localRepository,
+    cityRepository,
+    categoryRepository
+  )
 
   expect(
     async () => await updateLocal.execute({ id: "fake-id", data: newLocalData })
