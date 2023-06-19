@@ -6,4 +6,5 @@ export interface CategoryRepository {
   findByName(name: string): Promise<Category | undefined>
   findById(id: string): Promise<Category>
   update(id: string, data: Category): Promise<void>
+  delete(id: string): Promise<void>
 }

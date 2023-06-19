@@ -41,4 +41,10 @@ export class CategoryRepositoryMemory implements CategoryRepository {
       return category
     })
   }
+
+  async delete(id: string): Promise<void> {
+    this.categories = this.categories.filter(
+      (category) => category.getCategoryId() !== id
+    )
+  }
 }
