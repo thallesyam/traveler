@@ -34,6 +34,19 @@ export class SaveLocal {
       input.observation
     )
 
+    if (input.isHightlight) {
+      const locals = await this.localRepository.findByCityId(city.getCityId())
+      locals.map((local) => {
+        if (local.getIsHightlight()) {
+          local.setIsHightlight(false)
+        }
+
+        return
+      })
+
+      local.setIsHightlight()
+    }
+
     city.setLocal(local)
     category.setLocalInCategory(local.getLocalId(), city.getCityId())
 
@@ -58,4 +71,5 @@ type Input = {
   cityId: string
   categoryId: string
   observation?: string
+  isHightlight?: boolean
 }

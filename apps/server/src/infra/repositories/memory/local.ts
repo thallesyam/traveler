@@ -32,6 +32,11 @@ export class LocalRepositoryMemory implements LocalRepository {
     return local
   }
 
+  async findByCityId(cityId: string): Promise<Local[]> {
+    const locals = this.locals.filter((local) => local.cityId === cityId)
+    return locals
+  }
+
   async update(id: string, data: Local): Promise<void> {
     this.locals = this.locals.map((local) => {
       if (local.getLocalId() === id) {

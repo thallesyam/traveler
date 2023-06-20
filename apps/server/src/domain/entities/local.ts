@@ -9,6 +9,7 @@ type IHours = {
 
 export class Local {
   private id: string
+  private isHightlight = false
   readonly slug: string
   readonly createdAt = new Date()
 
@@ -56,5 +57,13 @@ export class Local {
 
   setLocalId(id: string) {
     this.id = id
+  }
+
+  getIsHightlight() {
+    return this.isHightlight
+  }
+
+  setIsHightlight(boolean = true) {
+    this.isHightlight = boolean
   }
 }
