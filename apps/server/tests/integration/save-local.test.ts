@@ -94,9 +94,76 @@ test("Deve criar um local com sucesso", async () => {
   expect(locals[0].description).toEqual(inputLocal.description)
   expect(locals[0].openingHours).toEqual(inputLocal.openingHours)
   expect(locals[0].images).toEqual(inputLocal.images)
+  expect(locals[0].getIsHightlight()).toEqual(false)
 })
 
-test("Deve criar um local com sucesso", async () => {
+test("Deve criar um local de destaque com sucesso", async () => {
+  const cityRepository = new CityRepositoryMemory()
+  const categoryRepository = new CategoryRepositoryMemory()
+  const address = new Address(
+    "08225260",
+    "Rua Francisco da cunha",
+    "Jardim Itapemirim",
+    "533",
+    { lat: 10, long: 10 }
+  )
+  const input = {
+    name: "Rio de Janeiro",
+    images: ["fake-image"],
+    description:
+      "O Rio de Janeiro é uma cidade deslumbrante com paisagens de tirar o fôlego.",
+  }
+  const saveCategory = new SaveCategory(categoryRepository)
+  await saveCategory.execute({ image: "fake-image", name: "Pontos turisticos" })
+  const category = (await categoryRepository.findByName(
+    "Pontos turisticos"
+  )) as Category
+  const saveCity = new SaveCity(cityRepository)
+  await saveCity.execute(input)
+  const city = (await cityRepository.findByName(input.name)) as City
+  const inputLocal = {
+    name: "Doce & Companhia",
+    description:
+      "O melhor lugar da cidade para você tomar um bom café. Fatias de tortas artesanais, bolos, lanches e biscoitos caseiros.",
+    images: ["fake-image"],
+    address,
+    openingHours: mockOpeningHours,
+    cityId: city.getCityId(),
+    categoryId: category.getCategoryId(),
+    isHightlight: true,
+  }
+  const inputLocal1 = {
+    name: "Doce e Companhia",
+    description:
+      "O melhor lugar da cidade para você tomar um bom café. Fatias de tortas artesanais, bolos, lanches e biscoitos caseiros.",
+    images: ["fake-image"],
+    address,
+    openingHours: mockOpeningHours,
+    cityId: city.getCityId(),
+    categoryId: category.getCategoryId(),
+    isHightlight: true,
+  }
+  const localRepository = new LocalRepositoryMemory()
+  const saveLocal = new SaveLocal(
+    cityRepository,
+    categoryRepository,
+    localRepository
+  )
+  await saveLocal.execute(inputLocal)
+  await saveLocal.execute(inputLocal1)
+  const locals = await localRepository.findAll()
+  expect(locals).toHaveLength(2)
+  expect(city.getLocals()).toHaveLength(2)
+  expect(locals[0].name).toEqual(inputLocal.name)
+  expect(locals[0].address).toEqual(address)
+  expect(locals[0].description).toEqual(inputLocal.description)
+  expect(locals[0].openingHours).toEqual(inputLocal.openingHours)
+  expect(locals[0].images).toEqual(inputLocal.images)
+  expect(locals[0].getIsHightlight()).toEqual(false)
+  expect(locals[1].getIsHightlight()).toEqual(true)
+})
+
+test("Deve tentar criar um local inválido", async () => {
   const cityRepository = new CityRepositoryMemory()
   const categoryRepository = new CategoryRepositoryMemory()
   const address = new Address(
