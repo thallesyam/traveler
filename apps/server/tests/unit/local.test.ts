@@ -1,5 +1,5 @@
 import { expect, test } from "vitest"
-import { Address, City, Local } from "@/domain/entities"
+import { Address, Category, City, Local } from "@/domain/entities"
 
 const mockCity = {
   name: "Rio de Janeiro",
@@ -13,6 +13,7 @@ const mockCity = {
 }
 
 test("Deve criar um local válido", async () => {
+  const category = new Category("Pontos Turísticos", "fake-images")
   const city = new City(mockCity.name, mockCity.images, mockCity.description)
   const address = new Address(
     "08225260",
@@ -66,7 +67,7 @@ test("Deve criar um local válido", async () => {
     address,
     openingHours,
     city.getCityId(),
-    "fake-category-id",
+    category,
     undefined
   )
   expect(local.name).toEqual("Doce & Companhia")
@@ -76,11 +77,12 @@ test("Deve criar um local válido", async () => {
   expect(local.images).toEqual(["fake-image"])
   expect(local.address).toStrictEqual(address)
   expect(local.cityId).toStrictEqual(city.getCityId())
-  expect(local.categoryId).toEqual("fake-category-id")
+  expect(local.category).toEqual(category)
   expect(local.slug).toEqual("doce-companhia")
 })
 
 test("Deve tentar criar um local inválido", async () => {
+  const category = new Category("Pontos Turísticos", "fake-images")
   const city = new City(mockCity.name, mockCity.images, mockCity.description)
   const address = new Address(
     "08225260",
@@ -97,7 +99,7 @@ test("Deve tentar criar um local inválido", async () => {
       address,
       undefined,
       city.getCityId(),
-      "fake-category-id",
+      category,
       undefined
     )
   }).toThrow(new Error("Insufficient information to create local"))

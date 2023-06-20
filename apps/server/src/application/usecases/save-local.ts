@@ -30,7 +30,7 @@ export class SaveLocal {
       input.address,
       input.openingHours,
       input.cityId,
-      input.categoryId,
+      category,
       input.observation
     )
 

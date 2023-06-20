@@ -1,5 +1,5 @@
 import { expect, test } from "vitest"
-import { Address, City, Local } from "@/domain/entities"
+import { Address, Category, City, Local } from "@/domain/entities"
 import { LocalRepositoryMemory } from "@/infra/repositories/memory"
 import { GetLocalBySlug } from "@/application/usecases"
 
@@ -16,6 +16,7 @@ const mockCity = {
 
 test("Deve buscar um local por slug", async () => {
   const city = new City(mockCity.name, mockCity.images, mockCity.description)
+  const category = new Category("Pontos Turísticos", "fake-images")
   const address = new Address(
     "08225260",
     "Rua Francisco da cunha",
@@ -69,7 +70,7 @@ test("Deve buscar um local por slug", async () => {
     address,
     openingHours,
     city.getCityId(),
-    "fake-category-id",
+    category,
     undefined
   )
   const localRepository = new LocalRepositoryMemory()
@@ -83,11 +84,12 @@ test("Deve buscar um local por slug", async () => {
   expect(local.images).toEqual(["fake-image"])
   expect(local.address).toStrictEqual(address)
   expect(local.cityId).toStrictEqual(city.getCityId())
-  expect(local.categoryId).toEqual("fake-category-id")
+  expect(local.category).toEqual(category)
 })
 
 test("Deve tentar buscar um local com slug inválido", async () => {
   const city = new City(mockCity.name, mockCity.images, mockCity.description)
+  const category = new Category("Pontos Turísticos", "fake-images")
   const address = new Address(
     "08225260",
     "Rua Francisco da cunha",
@@ -103,7 +105,7 @@ test("Deve tentar buscar um local com slug inválido", async () => {
     address,
     undefined,
     city.getCityId(),
-    "fake-category-id",
+    category,
     undefined
   )
   const localRepository = new LocalRepositoryMemory()

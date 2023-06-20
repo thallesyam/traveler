@@ -1,4 +1,4 @@
-import { Address } from "@/domain/entities"
+import { Address, Category } from "@/domain/entities"
 import { randomUUID } from "crypto"
 
 type IHours = {
@@ -19,7 +19,7 @@ export class Local {
     readonly address: Address,
     readonly openingHours: IHours[] | undefined,
     readonly cityId: string,
-    readonly categoryId: string,
+    readonly category: Category,
     readonly observation?: string
   ) {
     this.id = this.generateLocalId()
@@ -31,7 +31,7 @@ export class Local {
       !images.length ||
       !address ||
       !cityId ||
-      !categoryId
+      !category
     ) {
       throw new Error("Insufficient information to create local")
     }

@@ -21,6 +21,9 @@ export class UpdateLocal {
   async execute(input: Input): Promise<void> {
     const actualLocal = await this.localRepository.findById(input.id)
     const city = await this.cityRepository.findById(actualLocal.cityId)
+    const category = await this.categoryRepository.findById(
+      input.data?.categoryId || actualLocal.category.getCategoryId()
+    )
 
     const local = new Local(
       input.data?.name || actualLocal.name,
@@ -29,7 +32,7 @@ export class UpdateLocal {
       input.data?.address || actualLocal.address,
       input.data?.openingHours || actualLocal.openingHours,
       actualLocal.cityId,
-      input.data?.categoryId || actualLocal.categoryId,
+      category,
       input.data?.observation || actualLocal.observation
     )
 
@@ -39,12 +42,12 @@ export class UpdateLocal {
 
     if (
       input.data?.categoryId &&
-      input.data?.categoryId !== actualLocal.categoryId
+      input.data?.categoryId !== actualLocal.category.getCategoryId()
     ) {
       const category = await this.categoryRepository.findById(
         input.data?.categoryId
       )
-      category.removeLocal(actualLocal.categoryId)
+      category.removeLocal(actualLocal.category.getCategoryId())
       category.setLocalInCategory(local.getLocalId(), city.getCityId())
     }
 

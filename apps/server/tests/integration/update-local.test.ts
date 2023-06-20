@@ -228,7 +228,7 @@ test("Deve editar um local com sucesso utilizando o id da categoria", async () =
   )
   await updateLocal.execute({ id: local.getLocalId(), data: newLocalData })
   const localUpdated = await localRepository.findById(local.getLocalId())
-  expect(localUpdated.categoryId).toEqual(category1.getCategoryId())
+  expect(localUpdated.category).toEqual(category1)
   expect(localUpdated.getLocalId()).toEqual(local.getLocalId())
 })
 
