@@ -69,8 +69,8 @@ export class Local {
     this.isHightlight = boolean
   }
 
-  setAddComment(comment: Comment) {
-    this.comments.push()
+  setComment(comment: Comment) {
+    this.comments.push(comment)
   }
 
   getLocalComments() {
