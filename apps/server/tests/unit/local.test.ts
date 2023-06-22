@@ -12,7 +12,7 @@ const mockCity = {
   que cativa os sentidos e deixa memórias inesquecíveis.`,
 }
 
-test("Deve criar um local válido", async () => {
+test.only("Deve criar um local válido", async () => {
   const category = new Category("Pontos Turísticos", "fake-images")
   const city = new City(mockCity.name, mockCity.images, mockCity.description)
   const address = new Address(
@@ -79,6 +79,7 @@ test("Deve criar um local válido", async () => {
   expect(local.cityId).toStrictEqual(city.getCityId())
   expect(local.category).toEqual(category)
   expect(local.slug).toEqual("doce-companhia")
+  local.calculateRating()
 })
 
 test("Deve tentar criar um local inválido", async () => {

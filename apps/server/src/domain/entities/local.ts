@@ -11,6 +11,7 @@ export class Local {
   private id: string
   private isHightlight = false
   private comments: Comment[] = []
+  private rating: number | undefined = undefined
   readonly slug: string
   readonly createdAt = new Date()
 
@@ -74,5 +75,20 @@ export class Local {
 
   getLocalComments() {
     return this.comments
+  }
+
+  calculateRating() {
+    let sum = 0
+    for (let i = 0; i < this.comments.length; i++) {
+      const normalizedRating = this.comments[i].rating / 5
+      sum += normalizedRating
+    }
+
+    const average = Number(((sum / this.comments.length) * 5).toPrecision(2))
+    this.rating = average
+  }
+
+  getRating() {
+    return this.rating
   }
 }
