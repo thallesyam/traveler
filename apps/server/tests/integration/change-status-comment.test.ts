@@ -69,7 +69,7 @@ test("Deve aprovar um comentário com sucesso", async () => {
   const saveComment = new SaveComment(commentRepository, localRepository)
   await saveComment.execute(inputComment)
   const comments = await commentRepository.findAll()
-  const approveComment = new ApproveComment(commentRepository)
+  const approveComment = new ApproveComment(commentRepository, localRepository)
   await approveComment.execute({
     id: comments[0].getCommentId(),
     status: "approved",
@@ -140,7 +140,7 @@ test("Deve aprovar um comentário com sucesso e reprovar outro", async () => {
   await saveComment.execute(inputComment)
   await saveComment.execute(inputComment1)
   const comments = await commentRepository.findAll()
-  const approveComment = new ApproveComment(commentRepository)
+  const approveComment = new ApproveComment(commentRepository, localRepository)
   await approveComment.execute({
     id: comments[0].getCommentId(),
     status: "approved",
@@ -209,7 +209,7 @@ test("Deve tentar aprovar um comentário com id inválido", async () => {
 
   const saveComment = new SaveComment(commentRepository, localRepository)
   await saveComment.execute(inputComment)
-  const approveComment = new ApproveComment(commentRepository)
+  const approveComment = new ApproveComment(commentRepository, localRepository)
   expect(
     async () =>
       await approveComment.execute({

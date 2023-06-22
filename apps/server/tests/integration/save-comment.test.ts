@@ -6,6 +6,7 @@ import {
   LocalRepositoryMemory,
 } from "@/infra/repositories/memory"
 import {
+  ApproveComment,
   GetLocalBySlug,
   SaveCategory,
   SaveCity,
@@ -68,6 +69,11 @@ test("Deve criar um comentário com sucesso", async () => {
   const saveComment = new SaveComment(commentRepository, localRepository)
   await saveComment.execute(inputComment)
   const comments = await commentRepository.findAll()
+  const approveComment = new ApproveComment(commentRepository, localRepository)
+  await approveComment.execute({
+    id: comments[0].getCommentId(),
+    status: "approved",
+  })
   expect(comments[0].name).toBe(inputComment.name)
   expect(comments[0].image).toBe(inputComment.image)
   expect(comments[0].text).toBe(inputComment.text)
@@ -138,6 +144,16 @@ test("Deve criar dois comentários com sucesso e calcular corretamente a pontua�
   const saveComment = new SaveComment(commentRepository, localRepository)
   await saveComment.execute(inputComment)
   await saveComment.execute(inputComment1)
+  const comments = await commentRepository.findAll()
+  const approveComment = new ApproveComment(commentRepository, localRepository)
+  await approveComment.execute({
+    id: comments[0].getCommentId(),
+    status: "approved",
+  })
+  await approveComment.execute({
+    id: comments[1].getCommentId(),
+    status: "approved",
+  })
   expect(local.getRating()).toStrictEqual(3.9)
 })
 
