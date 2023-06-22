@@ -1,4 +1,4 @@
-import { Address, Category } from "@/domain/entities"
+import { Address, Category, Comment } from "@/domain/entities"
 import { randomUUID } from "crypto"
 
 type IHours = {
@@ -10,6 +10,7 @@ type IHours = {
 export class Local {
   private id: string
   private isHightlight = false
+  private comments: Comment[] = []
   readonly slug: string
   readonly createdAt = new Date()
 
@@ -65,5 +66,13 @@ export class Local {
 
   setIsHightlight(boolean = true) {
     this.isHightlight = boolean
+  }
+
+  setAddComment(comment: Comment) {
+    this.comments.push()
+  }
+
+  getLocalComments() {
+    return this.comments
   }
 }
