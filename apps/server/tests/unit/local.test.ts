@@ -12,7 +12,7 @@ const mockCity = {
   que cativa os sentidos e deixa memórias inesquecíveis.`,
 }
 
-test.only("Deve criar um local válido", async () => {
+test("Deve criar um local válido", async () => {
   const category = new Category("Pontos Turísticos", "fake-images")
   const city = new City(mockCity.name, mockCity.images, mockCity.description)
   const address = new Address(
