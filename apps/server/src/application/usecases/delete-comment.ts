@@ -11,6 +11,7 @@ export class DeleteComment {
     const local = await this.localRepository.findById(comment.localId)
     await this.commentRepository.delete(comment.getCommentId())
     local.removeComment(comment.getCommentId())
+    local.calculateRating()
     return
   }
 }
