@@ -7,6 +7,8 @@ type IHours = {
   close: number | null
 }
 
+const MAX_CALCULATION_RATING = 5
+
 export class Local {
   private id: string
   private isHightlight = false
@@ -80,11 +82,13 @@ export class Local {
   calculateRating() {
     let sum = 0
     for (let i = 0; i < this.comments.length; i++) {
-      const normalizedRating = this.comments[i].rating / 5
+      const normalizedRating = this.comments[i].rating / MAX_CALCULATION_RATING
       sum += normalizedRating
     }
 
-    const average = Number(((sum / this.comments.length) * 5).toPrecision(2))
+    const average = Number(
+      ((sum / this.comments.length) * MAX_CALCULATION_RATING).toPrecision(2)
+    )
     this.rating = average
   }
 
