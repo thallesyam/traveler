@@ -1,5 +1,5 @@
 import { expect, test } from "vitest"
-import { Address, City, Local } from "@/domain/entities"
+import { Address, Category, City, Local } from "@/domain/entities"
 import { LocalRepositoryMemory } from "@/infra/repositories/memory"
 import { GetLocals } from "@/application/usecases"
 
@@ -16,6 +16,7 @@ const mockCity = {
 
 test("Deve buscar por todos os locais", async () => {
   const city = new City(mockCity.name, mockCity.images, mockCity.description)
+  const category = new Category("Pontos Turísticos", "fake-images")
   const address = new Address(
     "08225260",
     "Rua Francisco da cunha",
@@ -31,7 +32,7 @@ test("Deve buscar por todos os locais", async () => {
     address,
     undefined,
     city.getCityId(),
-    "fake-category-id",
+    category,
     undefined
   )
   const localRepository = new LocalRepositoryMemory()
