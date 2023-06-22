@@ -15,4 +15,14 @@ export class CommentRepositoryMemory implements CommentRepository {
   async findAll(): Promise<Comment[]> {
     return this.comments
   }
+
+  async findById(id: string): Promise<Comment> {
+    const comment = this.comments.find(
+      (comment) => comment.getCommentId() === id
+    )
+    if (!comment) {
+      throw new Error("Comment not found")
+    }
+    return comment
+  }
 }

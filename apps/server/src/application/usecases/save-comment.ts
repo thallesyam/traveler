@@ -18,9 +18,9 @@ export class SaveComment {
       local.getLocalId()
     )
 
-    await this.commentRepository.save(comment)
     local.setComment(comment)
     local.calculateRating()
+    await this.commentRepository.save(comment)
 
     return
   }

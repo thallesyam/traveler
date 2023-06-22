@@ -28,8 +28,8 @@ export class Comment {
     return this.id
   }
 
-  setStatus() {
-    this.status = true
+  setStatus(status: "approved" | "reproved") {
+    this.status = status === "approved" ? true : false
   }
 
   getStatus() {
