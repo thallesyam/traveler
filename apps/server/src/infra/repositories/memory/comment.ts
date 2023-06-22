@@ -26,6 +26,20 @@ export class CommentRepositoryMemory implements CommentRepository {
     return comment
   }
 
+  async updateStatus(
+    id: string,
+    status: "approved" | "reproved"
+  ): Promise<void> {
+    const comments = this.comments.map((comment) => {
+      if (comment.getCommentId() === id) {
+        comment.setStatus(status)
+      }
+
+      return comment
+    })
+    this.comments = comments
+  }
+
   async delete(id: string): Promise<void> {
     this.comments = this.comments.filter(
       (comment) => comment.getCommentId() !== id

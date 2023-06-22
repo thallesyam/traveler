@@ -6,6 +6,10 @@ export class ApproveComment {
   async execute(input: Input): Promise<void> {
     const comment = await this.commentRepository.findById(input.id)
     comment.setStatus(input.status)
+    await this.commentRepository.updateStatus(
+      comment.getCommentId(),
+      input.status
+    )
 
     return
   }
