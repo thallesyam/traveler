@@ -25,4 +25,10 @@ export class CommentRepositoryMemory implements CommentRepository {
     }
     return comment
   }
+
+  async delete(id: string): Promise<void> {
+    this.comments = this.comments.filter(
+      (comment) => comment.getCommentId() !== id
+    )
+  }
 }

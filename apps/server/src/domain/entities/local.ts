@@ -91,4 +91,10 @@ export class Local {
   getRating() {
     return this.rating
   }
+
+  removeComment(commentId: string) {
+    this.comments = this.comments.filter(
+      (local) => local.getCommentId() !== commentId
+    )
+  }
 }
