@@ -80,15 +80,21 @@ export class Local {
   }
 
   calculateRating() {
+    const approvedComments = this.comments.filter(
+      (comment) => comment.getStatus() === true
+    )
+
     let sum = 0
-    for (let i = 0; i < this.comments.length; i++) {
-      const normalizedRating = this.comments[i].rating / MAX_CALCULATION_RATING
+    for (let i = 0; i < approvedComments.length; i++) {
+      const normalizedRating =
+        approvedComments[i].rating / MAX_CALCULATION_RATING
       sum += normalizedRating
     }
 
     const average = Number(
-      ((sum / this.comments.length) * MAX_CALCULATION_RATING).toPrecision(2)
+      ((sum / approvedComments.length) * MAX_CALCULATION_RATING).toPrecision(2)
     )
+
     this.rating = average
   }
 
