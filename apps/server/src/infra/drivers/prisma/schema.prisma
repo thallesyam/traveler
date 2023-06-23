@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "mysql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(uuid())
+  name     String
+  email    String
+  password String
+
+  createdAt DateTime @default(now())
+}
+
+model City {
+  id          String  @id @default(uuid())
+  name        String
+  slug        String
+  images      Json
+  description String
+  locals      Local[]
+
+  createdAt DateTime @default(now())
+}
+
+model Local {
+  id           String   @id @default(uuid())
+  name         String
+  slug         String
+  description  String
+  images       Json
+  address      Json
+  openingHours Json
+  rating       Float
+  observation  String?
+  isHightlight Boolean?
+  categoryId   String
+  cityId       String
+
+  category Category  @relation(fields: [categoryId], references: [id])
+  city     City      @relation(fields: [cityId], references: [id])
+  comment  Comment[]
+
+  createdAt DateTime @default(now())
+}
+
+model Category {
+  id String @id @default(uuid())
+
+  name  String
+  image String
+
+  local Local[]
+
+  createdAt DateTime @default(now())
+}
+
+model Comment {
+  id String @id @default(uuid())
+
+  name   String
+  image  String
+  text   String
+  rating Float
+  status Boolean
+
+  Local   Local?  @relation(fields: [localId], references: [id])
+  localId String?
+
+  createdAt DateTime @default(now())
+}
