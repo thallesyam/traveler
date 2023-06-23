@@ -37,6 +37,8 @@ CREATE TABLE `Local` (
     `cityId` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
+    INDEX `Local_categoryId_idx`(`categoryId`),
+    INDEX `Local_cityId_idx`(`cityId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -57,18 +59,10 @@ CREATE TABLE `Comment` (
     `image` VARCHAR(191) NOT NULL,
     `text` VARCHAR(191) NOT NULL,
     `rating` DOUBLE NOT NULL,
-    `status` BOOLEAN NOT NULL,
+    `status` BOOLEAN NULL,
     `localId` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
+    INDEX `Comment_localId_idx`(`localId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- AddForeignKey
-ALTER TABLE `Local` ADD CONSTRAINT `Local_categoryId_fkey` FOREIGN KEY (`categoryId`) REFERENCES `Category`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Local` ADD CONSTRAINT `Local_cityId_fkey` FOREIGN KEY (`cityId`) REFERENCES `City`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Comment` ADD CONSTRAINT `Comment_localId_fkey` FOREIGN KEY (`localId`) REFERENCES `Local`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;

@@ -6,15 +6,16 @@ datasource db {
   provider          = "mysql"
   url               = env("DATABASE_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  relationMode      = "prisma"
 }
 
 model User {
   id       String @id @default(uuid())
   name     String
-  email    String
+  email    String @unique
   password String
 
-  createdAt DateTime @default(now())
+  createdAt DateTime @default(now()) @db.DateTime(3)
 }
 
 model City {
@@ -25,7 +26,7 @@ model City {
   description String
   locals      Local[]
 
-  createdAt DateTime @default(now())
+  createdAt DateTime @default(now()) @db.DateTime(3)
 }
 
 model Local {
@@ -38,39 +39,41 @@ model Local {
   openingHours Json
   rating       Float
   observation  String?
-  isHightlight Boolean?
+  isHightlight Boolean? @db.TinyInt
   categoryId   String
   cityId       String
 
-  category Category  @relation(fields: [categoryId], references: [id])
-  city     City      @relation(fields: [cityId], references: [id])
+  category Category? @relation(fields: [categoryId], references: [id])
+  city     City?     @relation(fields: [cityId], references: [id])
   comment  Comment[]
 
-  createdAt DateTime @default(now())
+  createdAt DateTime @default(now()) @db.DateTime(3)
+
+  @@index([categoryId])
+  @@index([cityId])
 }
 
 model Category {
-  id String @id @default(uuid())
-
+  id    String @id @default(uuid())
   name  String
   image String
 
   local Local[]
 
-  createdAt DateTime @default(now())
+  createdAt DateTime @default(now()) @db.DateTime(3)
 }
 
 model Comment {
-  id String @id @default(uuid())
-
+  id     String   @id @default(uuid())
   name   String
   image  String
   text   String
   rating Float
-  status Boolean
+  status Boolean? @db.TinyInt
 
-  Local   Local?  @relation(fields: [localId], references: [id])
-  localId String?
+  local     Local?   @relation(fields: [localId], references: [id])
+  localId   String?
+  createdAt DateTime @default(now()) @db.DateTime(3)
 
-  createdAt DateTime @default(now())
+  @@index([localId])
 }
