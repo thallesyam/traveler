@@ -21,6 +21,14 @@ export class User {
     return new User(name, email, await Password.create(password, "salt"))
   }
 
+  static async buildExistingUser(
+    name: string,
+    email: string,
+    hashPassword: string
+  ) {
+    return new User(name, email, new Password(hashPassword, "salt"))
+  }
+
   isValidEmail(email: string) {
     return String(email)
       .toLowerCase()
