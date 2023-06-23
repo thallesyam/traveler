@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "prisma": {
+    "schema": "./src/infra/drivers/prisma/schema.prisma"
+  },
   "scripts": {
     "dev": "tsx watch src/main.ts",
     "test": "vitest",
@@ -12,6 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^4.16.1",
     "@types/node": "^20.2.5",
     "jsonwebtoken": "^9.0.0",
     "tsconfig": "workspace:*",
