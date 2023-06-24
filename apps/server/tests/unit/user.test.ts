@@ -15,6 +15,27 @@ test("Deve criar um usuário válido", async () => {
   expect(user.password.salt).toBe("salt")
 })
 
+test("Deve modelar um usuário existente", async () => {
+  const user = await User.create(
+    "Thalles Ian",
+    "thallesyam@gmail.com",
+    "admin@123"
+  )
+
+  const userHydated = await User.buildExistingUser(
+    user.name,
+    user.email,
+    user.password.value
+  )
+
+  expect(userHydated.name).toBe("Thalles Ian")
+  expect(userHydated.email).toBe("thallesyam@gmail.com")
+  expect(userHydated.password.value).toBe(
+    "338e439d143f507a83fce6724f7fbe71c95bc565d674b6cd280f711b094acfd456e70e1e0dad0c31d2f5131cc5e21814e5ae98331f6a3020ff16fc55c1bba32e"
+  )
+  expect(userHydated.password.salt).toBe("salt")
+})
+
 test("Deve tentar criar um usuário com faltando informação", async () => {
   expect(async () =>
     User.create("", "thallesyamasd@gmail.com", "admin@123")
