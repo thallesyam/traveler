@@ -23,10 +23,22 @@ export class LocalRepositoryDatabase implements LocalRepository {
         slug: local.slug,
         rating: local.getRating() ?? 0,
         openingHours: { openingHours: local.openingHours },
-        categoryId: local.category.getCategoryId(),
-        cityId: local.cityId,
+        category: {
+          connect: {
+            id: local.category.getCategoryId(),
+          },
+        },
+        city: {
+          connect: {
+            id: local.cityId,
+          },
+        },
         isHightlight: local.getIsHightlight(),
         observation: local.observation,
+      },
+      include: {
+        category: true,
+        city: true,
       },
     })
   }
@@ -67,6 +79,7 @@ export class LocalRepositoryDatabase implements LocalRepository {
         category,
         local?.observation ?? ""
       )
+      localToEntity.setIsHightlight(!!local.isHightlight)
       localToEntity.setLocalId(local.id)
       return localToEntity
     })
@@ -197,7 +210,6 @@ export class LocalRepositoryDatabase implements LocalRepository {
         rating: data.getRating() ?? 0,
         openingHours: { openingHours: data.openingHours },
         categoryId: data.category.getCategoryId(),
-        cityId: data.cityId,
         isHightlight: data.getIsHightlight(),
         observation: data.observation,
       },

@@ -50,6 +50,8 @@ export class SaveLocal {
     city.setLocal(local)
     category.setLocalInCategory(local.getLocalId(), city.getCityId())
 
+    await this.categoryRepository.update(category.getCategoryId(), category)
+    await this.cityRepository.update(city.getCityId(), city)
     await this.localRepository.save(local)
 
     return

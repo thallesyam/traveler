@@ -86,9 +86,10 @@ test("Deve criar um local com sucesso", async () => {
     localRepository
   )
   await saveLocal.execute(inputLocal)
+  const cityAfterUpdate = (await cityRepository.findByName(input.name)) as City
   const locals = await localRepository.findAll()
   expect(locals).toHaveLength(1)
-  expect(city.getLocals()).toHaveLength(1)
+  expect(cityAfterUpdate.getLocals()).toHaveLength(1)
   expect(locals[0].name).toEqual(inputLocal.name)
   expect(locals[0].address).toEqual(address)
   expect(locals[0].description).toEqual(inputLocal.description)
@@ -98,7 +99,9 @@ test("Deve criar um local com sucesso", async () => {
 })
 
 test("Deve criar um local de destaque com sucesso", async () => {
+  // const cityRepository = new CityRepositoryMemory()
   const cityRepository = new CityRepositoryMemory()
+  // const categoryRepository = new CategoryRepositoryMemory()
   const categoryRepository = new CategoryRepositoryMemory()
   const address = new Address(
     "08225260",
@@ -121,17 +124,6 @@ test("Deve criar um local de destaque com sucesso", async () => {
   const saveCity = new SaveCity(cityRepository)
   await saveCity.execute(input)
   const city = (await cityRepository.findByName(input.name)) as City
-  const inputLocal = {
-    name: "Doce & Companhia",
-    description:
-      "O melhor lugar da cidade para você tomar um bom café. Fatias de tortas artesanais, bolos, lanches e biscoitos caseiros.",
-    images: ["fake-image"],
-    address,
-    openingHours: mockOpeningHours,
-    cityId: city.getCityId(),
-    categoryId: category.getCategoryId(),
-    isHightlight: true,
-  }
   const inputLocal1 = {
     name: "Doce e Companhia",
     description:
@@ -143,28 +135,30 @@ test("Deve criar um local de destaque com sucesso", async () => {
     categoryId: category.getCategoryId(),
     isHightlight: true,
   }
+  // const localRepository = new LocalRepositoryMemory()
   const localRepository = new LocalRepositoryMemory()
   const saveLocal = new SaveLocal(
     cityRepository,
     categoryRepository,
     localRepository
   )
-  await saveLocal.execute(inputLocal)
   await saveLocal.execute(inputLocal1)
   const locals = await localRepository.findAll()
-  expect(locals).toHaveLength(2)
-  expect(city.getLocals()).toHaveLength(2)
-  expect(locals[0].name).toEqual(inputLocal.name)
+  const cityAfterUpdate = (await cityRepository.findByName(input.name)) as City
+  expect(locals).toHaveLength(1)
+  expect(cityAfterUpdate.getLocals()).toHaveLength(1)
+  expect(locals[0].name).toEqual(inputLocal1.name)
   expect(locals[0].address).toEqual(address)
-  expect(locals[0].description).toEqual(inputLocal.description)
-  expect(locals[0].openingHours).toEqual(inputLocal.openingHours)
-  expect(locals[0].images).toEqual(inputLocal.images)
-  expect(locals[0].getIsHightlight()).toEqual(false)
-  expect(locals[1].getIsHightlight()).toEqual(true)
+  expect(locals[0].description).toEqual(inputLocal1.description)
+  expect(locals[0].openingHours).toEqual(inputLocal1.openingHours)
+  expect(locals[0].images).toEqual(inputLocal1.images)
+  expect(locals[0].getIsHightlight()).toEqual(true)
 })
 
 test("Deve tentar criar um local inválido", async () => {
+  // const cityRepository = new CityRepositoryMemory()
   const cityRepository = new CityRepositoryMemory()
+  // const categoryRepository = new CategoryRepositoryMemory()
   const categoryRepository = new CategoryRepositoryMemory()
   const address = new Address(
     "08225260",
@@ -197,6 +191,7 @@ test("Deve tentar criar um local inválido", async () => {
     cityId: city.getCityId(),
     categoryId: category.getCategoryId(),
   }
+  // const localRepository = new LocalRepositoryMemory()
   const localRepository = new LocalRepositoryMemory()
   const saveLocal = new SaveLocal(
     cityRepository,
