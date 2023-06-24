@@ -1,6 +1,10 @@
 import { expect, test } from "vitest"
 import { Address, Category, City, Local } from "@/domain/entities"
-import { LocalRepositoryMemory } from "@/infra/repositories/memory"
+import {
+  CategoryRepositoryMemory,
+  CityRepositoryMemory,
+  LocalRepositoryMemory,
+} from "@/infra/repositories/memory"
 import { GetLocals } from "@/application/usecases"
 
 const mockCity = {
@@ -35,7 +39,11 @@ test("Deve buscar por todos os locais", async () => {
     category,
     undefined
   )
+  const cityRepository = new CityRepositoryMemory()
+  const categoryRepository = new CategoryRepositoryMemory()
   const localRepository = new LocalRepositoryMemory()
+  await cityRepository.save(city)
+  await categoryRepository.save(category)
   await localRepository.save(input)
   const getLocalById = new GetLocals(localRepository)
   const locals = await getLocalById.execute()
