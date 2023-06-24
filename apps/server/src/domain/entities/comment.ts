@@ -28,6 +28,10 @@ export class Comment {
     return this.id
   }
 
+  setCommentId(id: string) {
+    this.id = id
+  }
+
   setStatus(status: "approved" | "reproved") {
     this.status = status === "approved" ? true : false
   }
