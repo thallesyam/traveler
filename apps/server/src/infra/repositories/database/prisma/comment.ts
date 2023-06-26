@@ -2,6 +2,15 @@ import { Comment } from "@/domain/entities"
 import { CommentRepository } from "@/application/repositories"
 import { PrismaClient } from "@prisma/client"
 
+type CommentDatabaseModel = {
+  id: string
+  name: string
+  image: string
+  text: string
+  rating: number
+  localId: string
+  status?: boolean
+}
 export class CommentRepositoryDatabase implements CommentRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
@@ -19,48 +28,21 @@ export class CommentRepositoryDatabase implements CommentRepository {
   }
 
   async findAll(): Promise<Comment[]> {
-    const comments = await this.prisma.comment.findMany()
-
-    return comments.map((comment) => {
-      const commentToEntity = new Comment(
-        comment.name,
-        comment.image,
-        comment.text,
-        comment.rating,
-        comment.localId as string
-      )
-
-      if (comment.status !== null) {
-        commentToEntity.setStatus(
-          comment.status === true ? "approved" : "reproved"
-        )
-      }
-      commentToEntity.setCommentId(comment.id)
-      return commentToEntity
-    })
+    const comments =
+      (await this.prisma.comment.findMany()) as unknown as CommentDatabaseModel[]
+    return comments.map(toEntityComment)
   }
 
   async findById(id: string): Promise<Comment> {
-    const comment = await this.prisma.comment.findUnique({ where: { id } })
+    const comment = (await this.prisma.comment.findUnique({
+      where: { id },
+    })) as unknown as CommentDatabaseModel
 
     if (!comment) {
       throw new Error("Comment not found")
     }
 
-    const commentToEntity = new Comment(
-      comment.name,
-      comment.image,
-      comment.text,
-      comment.rating,
-      comment.localId as string
-    )
-    if (comment.status !== null) {
-      commentToEntity.setStatus(
-        comment.status === true ? "approved" : "reproved"
-      )
-    }
-    commentToEntity.setCommentId(comment.id)
-    return commentToEntity
+    return toEntityComment(comment)
   }
 
   async updateStatus(
@@ -80,4 +62,19 @@ export class CommentRepositoryDatabase implements CommentRepository {
   async delete(id: string): Promise<void> {
     await this.prisma.comment.delete({ where: { id } })
   }
+}
+
+export function toEntityComment(comment: CommentDatabaseModel) {
+  const commentToEntity = new Comment(
+    comment.name,
+    comment.image,
+    comment.text,
+    comment.rating,
+    comment.localId as string
+  )
+  if (comment.status !== null) {
+    commentToEntity.setStatus(comment.status === true ? "approved" : "reproved")
+  }
+  commentToEntity.setCommentId(comment.id)
+  return commentToEntity
 }
