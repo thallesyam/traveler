@@ -1,8 +1,6 @@
 import { Password } from "@/domain/entities"
 
 export class User {
-  readonly createdAt = new Date()
-
   constructor(
     readonly name: string,
     readonly email: string,
@@ -12,7 +10,7 @@ export class User {
       throw new Error("Invalid email")
     }
 
-    if (!name || !email || !password || !this.createdAt) {
+    if (!name || !email || !password) {
       throw new Error("Insufficient information to create the user")
     }
   }

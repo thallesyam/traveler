@@ -10,11 +10,14 @@ export class ApproveComment {
     const comment = await this.commentRepository.findById(input.id)
     const local = await this.localRepository.findById(comment.localId)
     comment.setStatus(input.status)
-    await this.commentRepository.updateStatus(
-      comment.getCommentId(),
-      input.status
-    )
+    local.removeComment(comment.getCommentId())
+    local.setComment(comment)
     local.calculateRating()
+    const status = comment.getStatus() === true ? "approved" : "reproved"
+
+    await this.commentRepository.updateStatus(comment.getCommentId(), status)
+
+    await this.localRepository.update(local.getLocalId(), local)
 
     return
   }

@@ -1,4 +1,4 @@
-import { expect, test } from "vitest"
+import { beforeAll, beforeEach, expect, test } from "vitest"
 import {
   CategoryRepositoryMemory,
   CityRepositoryMemory,
@@ -14,6 +14,12 @@ import {
   SaveLocal,
 } from "@/application/usecases"
 import { Address, Category, City } from "@/domain/entities"
+import {
+  CategoryRepositoryDatabase,
+  CityRepositoryDatabase,
+  CommentRepositoryDatabase,
+  LocalRepositoryDatabase,
+} from "@/infra/repositories/database/prisma"
 
 test("Deve criar um comentário com sucesso", async () => {
   const commentRepository = new CommentRepositoryMemory()
@@ -74,13 +80,17 @@ test("Deve criar um comentário com sucesso", async () => {
     id: comments[0].getCommentId(),
     status: "approved",
   })
+  const commentsAfterApprove = await commentRepository.findAll()
+  const localAfterAddComment = await getLocalBySlug.execute({
+    slug: "doce-companhia",
+  })
   expect(comments[0].name).toBe(inputComment.name)
   expect(comments[0].image).toBe(inputComment.image)
   expect(comments[0].text).toBe(inputComment.text)
   expect(comments[0].rating).toBe(inputComment.rating)
   expect(comments[0].localId).toBe(inputComment.localId)
-  expect(local.getLocalComments()).toStrictEqual(comments)
-  expect(local.getRating()).toStrictEqual(3)
+  expect(localAfterAddComment.getLocalComments()).toEqual(commentsAfterApprove)
+  expect(localAfterAddComment.getRating()).toStrictEqual(3)
 })
 
 test("Deve criar dois comentários com sucesso e calcular corretamente a pontuação de avaliação", async () => {
@@ -154,11 +164,16 @@ test("Deve criar dois comentários com sucesso e calcular corretamente a pontua�
     id: comments[1].getCommentId(),
     status: "approved",
   })
-  expect(local.getRating()).toStrictEqual(3.9)
+  const localAfterOperations = await getLocalBySlug.execute({
+    slug: "doce-companhia",
+  })
+
+  expect(localAfterOperations.getRating()).toStrictEqual(3.9)
 })
 
 test("Deve tentar criar um comentário com localId inválido", async () => {
   const commentRepository = new CommentRepositoryMemory()
+  const cityRepository = new CityRepositoryMemory()
   const categoryRepository = new CategoryRepositoryMemory()
   const localRepository = new LocalRepositoryMemory()
   const saveCategory = new SaveCategory(categoryRepository)

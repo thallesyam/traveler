@@ -3,7 +3,6 @@ import { randomUUID } from "crypto"
 export class Comment {
   private id: string
   private status: boolean | undefined
-  readonly createdAt = new Date()
 
   constructor(
     readonly name: string,

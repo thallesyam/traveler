@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client"
-import { Address, Category, Local } from "@/domain/entities"
+import { Address, Category, Comment, Local } from "@/domain/entities"
 import { LocalRepository } from "@/application/repositories"
 
 type IHours = {
@@ -63,12 +63,28 @@ export class LocalRepositoryDatabase implements LocalRepository {
         addressData.number,
         addressData.coordinate
       )
-
       const category = new Category(
         local.category?.name as string,
         local.category?.image as string
       )
       category.setCategoryId(local.categoryId)
+      const comments = local.comment.map((comment) => {
+        const commentToEntity = new Comment(
+          comment.name,
+          comment.image,
+          comment.text,
+          comment.rating,
+          comment.localId as string
+        )
+        commentToEntity.setCommentId(comment.id)
+        if (comment.status !== null) {
+          commentToEntity.setStatus(
+            comment.status === true ? "approved" : "reproved"
+          )
+        }
+        return commentToEntity
+      })
+
       const localToEntity = new Local(
         local.name,
         local.description,
@@ -79,8 +95,9 @@ export class LocalRepositoryDatabase implements LocalRepository {
         category,
         local?.observation ?? ""
       )
-      localToEntity.setIsHightlight(!!local.isHightlight)
       localToEntity.setLocalId(local.id)
+      comments.map((comment) => localToEntity.setComment(comment))
+      localToEntity.calculateRating()
       return localToEntity
     })
   }
@@ -108,6 +125,23 @@ export class LocalRepositoryDatabase implements LocalRepository {
       local.category?.image as string
     )
     category.setCategoryId(local.categoryId)
+    const comments = local.comment.map((comment) => {
+      const commentToEntity = new Comment(
+        comment.name,
+        comment.image,
+        comment.text,
+        comment.rating,
+        comment.localId as string
+      )
+      commentToEntity.setCommentId(comment.id)
+      if (comment.status !== null) {
+        commentToEntity.setStatus(
+          comment.status === true ? "approved" : "reproved"
+        )
+      }
+      return commentToEntity
+    })
+
     const localToEntity = new Local(
       local.name,
       local.description,
@@ -119,6 +153,7 @@ export class LocalRepositoryDatabase implements LocalRepository {
       local?.observation ?? ""
     )
     localToEntity.setLocalId(local.id)
+    comments.map((comment) => localToEntity.setComment(comment))
     return localToEntity
   }
 
@@ -145,6 +180,23 @@ export class LocalRepositoryDatabase implements LocalRepository {
       local.category?.image as string
     )
     category.setCategoryId(local.categoryId)
+    const comments = local.comment.map((comment) => {
+      const commentToEntity = new Comment(
+        comment.name,
+        comment.image,
+        comment.text,
+        comment.rating,
+        comment.localId as string
+      )
+      commentToEntity.setCommentId(comment.id)
+      if (comment.status !== null) {
+        commentToEntity.setStatus(
+          comment.status === true ? "approved" : "reproved"
+        )
+      }
+      return commentToEntity
+    })
+
     const localToEntity = new Local(
       local.name,
       local.description,
@@ -156,6 +208,8 @@ export class LocalRepositoryDatabase implements LocalRepository {
       local?.observation ?? ""
     )
     localToEntity.setLocalId(local.id)
+    comments.map((comment) => localToEntity.setComment(comment))
+    localToEntity.calculateRating()
     return localToEntity
   }
 
@@ -183,6 +237,24 @@ export class LocalRepositoryDatabase implements LocalRepository {
         local.category?.image as string
       )
       category.setCategoryId(local.categoryId)
+      const comments = local.comment.map((comment) => {
+        const commentToEntity = new Comment(
+          comment.name,
+          comment.image,
+          comment.text,
+          comment.rating,
+          comment.localId as string
+        )
+        commentToEntity.setCommentId(comment.id)
+        if (comment.status !== null) {
+          commentToEntity.setStatus(
+            comment.status === true ? "approved" : "reproved"
+          )
+        }
+        localToEntity.calculateRating()
+        return commentToEntity
+      })
+
       const localToEntity = new Local(
         local.name,
         local.description,
@@ -194,6 +266,7 @@ export class LocalRepositoryDatabase implements LocalRepository {
         local?.observation ?? ""
       )
       localToEntity.setLocalId(local.id)
+      comments.map((comment) => localToEntity.setComment(comment))
       return localToEntity
     })
   }

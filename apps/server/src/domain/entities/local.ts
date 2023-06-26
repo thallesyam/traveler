@@ -15,7 +15,6 @@ export class Local {
   private comments: Comment[] = []
   private rating: number | undefined = undefined
   readonly slug: string
-  readonly createdAt = new Date()
 
   constructor(
     readonly name: string,
@@ -83,6 +82,11 @@ export class Local {
     const approvedComments = this.comments.filter(
       (comment) => comment.getStatus() === true
     )
+
+    if (!approvedComments.length) {
+      this.rating = 0
+      return
+    }
 
     let sum = 0
     for (let i = 0; i < approvedComments.length; i++) {

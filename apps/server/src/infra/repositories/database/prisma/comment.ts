@@ -29,6 +29,12 @@ export class CommentRepositoryDatabase implements CommentRepository {
         comment.rating,
         comment.localId as string
       )
+
+      if (comment.status !== null) {
+        commentToEntity.setStatus(
+          comment.status === true ? "approved" : "reproved"
+        )
+      }
       commentToEntity.setCommentId(comment.id)
       return commentToEntity
     })
@@ -48,6 +54,11 @@ export class CommentRepositoryDatabase implements CommentRepository {
       comment.rating,
       comment.localId as string
     )
+    if (comment.status !== null) {
+      commentToEntity.setStatus(
+        comment.status === true ? "approved" : "reproved"
+      )
+    }
     commentToEntity.setCommentId(comment.id)
     return commentToEntity
   }
@@ -58,7 +69,6 @@ export class CommentRepositoryDatabase implements CommentRepository {
   ): Promise<void> {
     const comment = await this.findById(id)
     comment.setStatus(status)
-
     await this.prisma.comment.update({
       where: { id },
       data: {
