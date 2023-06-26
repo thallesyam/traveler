@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client"
 import { Category } from "@/domain/entities"
 import { CategoryRepository } from "@/application/repositories"
 
-type CategoryDatabaseModel = {
+export type CategoryDatabaseModel = {
   name: string
   image: string
   id: string
@@ -25,7 +25,7 @@ export class CategoryRepositoryDatabase implements CategoryRepository {
 
     if (!categories.length) return []
 
-    return categories.map(toEntity)
+    return categories.map(toEntityCategory)
   }
 
   async findByName(name: string): Promise<Category | undefined> {
@@ -33,7 +33,7 @@ export class CategoryRepositoryDatabase implements CategoryRepository {
 
     if (!category) return undefined
 
-    return toEntity(category)
+    return toEntityCategory(category)
   }
 
   async findById(id: string): Promise<Category> {
@@ -43,7 +43,7 @@ export class CategoryRepositoryDatabase implements CategoryRepository {
       throw new Error("Category not found")
     }
 
-    return toEntity(category)
+    return toEntityCategory(category)
   }
 
   async findByCityId(
@@ -74,7 +74,7 @@ export class CategoryRepositoryDatabase implements CategoryRepository {
   }
 }
 
-function toEntity(category: CategoryDatabaseModel) {
+export function toEntityCategory(category: CategoryDatabaseModel) {
   const categoryToEntity = new Category(category.name, category.image)
   categoryToEntity.setCategoryId(category.id)
   return categoryToEntity
