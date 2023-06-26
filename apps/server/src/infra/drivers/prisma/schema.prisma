@@ -23,7 +23,7 @@ model City {
   name        String
   slug        String
   images      Json
-  description String
+  description String  @db.VarChar(400)
   locals      Local[]
 
   createdAt DateTime @default(now()) @db.DateTime(3)
@@ -33,7 +33,7 @@ model Local {
   id           String   @id @default(uuid())
   name         String
   slug         String
-  description  String
+  description  String   @db.VarChar(400)
   images       Json
   address      Json
   openingHours Json
@@ -43,8 +43,8 @@ model Local {
   categoryId   String
   cityId       String
 
-  category Category? @relation(fields: [categoryId], references: [id])
-  city     City?     @relation(fields: [cityId], references: [id])
+  category Category? @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  city     City?     @relation(fields: [cityId], references: [id], onDelete: Cascade)
   comment  Comment[]
 
   createdAt DateTime @default(now()) @db.DateTime(3)
@@ -71,7 +71,7 @@ model Comment {
   rating Float
   status Boolean? @db.TinyInt
 
-  local     Local?   @relation(fields: [localId], references: [id])
+  local     Local?   @relation(fields: [localId], references: [id], onDelete: Cascade)
   localId   String?
   createdAt DateTime @default(now()) @db.DateTime(3)
 
