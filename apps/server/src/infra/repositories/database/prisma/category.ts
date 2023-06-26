@@ -2,6 +2,12 @@ import { PrismaClient } from "@prisma/client"
 import { Category } from "@/domain/entities"
 import { CategoryRepository } from "@/application/repositories"
 
+type CategoryDatabaseModel = {
+  name: string
+  image: string
+  id: string
+}
+
 export class CategoryRepositoryDatabase implements CategoryRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
@@ -19,11 +25,7 @@ export class CategoryRepositoryDatabase implements CategoryRepository {
 
     if (!categories.length) return []
 
-    return categories.map((category) => {
-      const categoryToEntity = new Category(category.name, category.image)
-      categoryToEntity.setCategoryId(category.id)
-      return categoryToEntity
-    })
+    return categories.map(toEntity)
   }
 
   async findByName(name: string): Promise<Category | undefined> {
@@ -31,10 +33,7 @@ export class CategoryRepositoryDatabase implements CategoryRepository {
 
     if (!category) return undefined
 
-    const categoryToEntity = new Category(category.name, category.image)
-
-    categoryToEntity.setCategoryId(category.id)
-    return categoryToEntity
+    return toEntity(category)
   }
 
   async findById(id: string): Promise<Category> {
@@ -43,9 +42,8 @@ export class CategoryRepositoryDatabase implements CategoryRepository {
     if (!category) {
       throw new Error("Category not found")
     }
-    const categoryToEntity = new Category(category.name, category.image)
-    categoryToEntity.setCategoryId(category.id)
-    return categoryToEntity
+
+    return toEntity(category)
   }
 
   async findByCityId(
@@ -74,4 +72,10 @@ export class CategoryRepositoryDatabase implements CategoryRepository {
   async delete(id: string): Promise<void> {
     await this.prisma.category.delete({ where: { id } })
   }
+}
+
+function toEntity(category: CategoryDatabaseModel) {
+  const categoryToEntity = new Category(category.name, category.image)
+  categoryToEntity.setCategoryId(category.id)
+  return categoryToEntity
 }
