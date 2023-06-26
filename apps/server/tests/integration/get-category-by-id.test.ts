@@ -1,11 +1,11 @@
 import { expect, test } from "vitest"
-import { CategoryRepositoryMemory } from "@/infra/repositories/memory"
-import { SaveCategory } from "@/application/usecases"
-import { GetCategoryById } from "@/application/usecases"
+import { SaveCategory, GetCategoryById } from "@/application/usecases"
 import { Category } from "@/domain/entities"
+import { MemoryRepository } from "@/infra/factories"
 
 test("Deve buscar uma categoria por id com sucesso", async () => {
-  const categoryRepository = new CategoryRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const categoryRepository = repositoryFactory.createCategoryRepository()
   const input = {
     name: "Rio de Janeiro",
     image: "fake-image",
@@ -22,7 +22,8 @@ test("Deve buscar uma categoria por id com sucesso", async () => {
 })
 
 test("Deve buscar uma categoria com id inexistente", async () => {
-  const categoryRepository = new CategoryRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const categoryRepository = repositoryFactory.createCategoryRepository()
   const input = {
     name: "Rio de Janeiro",
     image: "fake-image",

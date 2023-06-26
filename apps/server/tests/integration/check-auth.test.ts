@@ -1,19 +1,18 @@
 import { expect, test } from "vitest"
 
-import { UserRepositoryMemory } from "@/infra/repositories/memory"
-import { JsonWebToken } from "@/infra/gateways"
-import { Login } from "@/application/usecases"
+import { Login, CheckAuth } from "@/application/usecases"
 import { User } from "@/domain/entities"
-import CheckAuth from "@/application/usecases/check-auth"
+import { JsonWebToken } from "@/infra/gateways"
+import { MemoryRepository } from "@/infra/factories"
 
 test("Deve realizar a autenticação corretamente", async () => {
+  const repositoryFactory = new MemoryRepository()
+  const userRepository = repositoryFactory.createUserRepository()
   const user = await User.create(
     "Thalles Ian",
     "thallesyam@gmail.com",
     "admin@123"
   )
-
-  const userRepository = new UserRepositoryMemory()
   await userRepository.save(user)
   const input = {
     email: user.email,
@@ -28,13 +27,14 @@ test("Deve realizar a autenticação corretamente", async () => {
 })
 
 test("Deve realizar a autenticação com token inválido", async () => {
+  const repositoryFactory = new MemoryRepository()
+  const userRepository = repositoryFactory.createUserRepository()
   const user = await User.create(
     "Thalles Ian",
     "thallesyam@gmail.com",
     "admin@123"
   )
 
-  const userRepository = new UserRepositoryMemory()
   await userRepository.save(user)
   const tokenGateway = new JsonWebToken("fake-key")
   const checkAuth = new CheckAuth(tokenGateway)

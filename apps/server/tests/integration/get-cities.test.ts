@@ -1,10 +1,10 @@
 import { expect, test } from "vitest"
-import { CityRepositoryMemory } from "@/infra/repositories/memory"
-import { SaveCity } from "@/application/usecases"
-import { GetCities } from "@/application/usecases"
+import { SaveCity, GetCities } from "@/application/usecases"
+import { MemoryRepository } from "@/infra/factories"
 
 test("Deve buscar todas as cidades com sucesso", async () => {
-  const cityRepository = new CityRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const cityRepository = repositoryFactory.createCityRepository()
   const input = {
     name: "Rio de Janeiro",
     images: ["fake-image"],
@@ -19,7 +19,8 @@ test("Deve buscar todas as cidades com sucesso", async () => {
 })
 
 test("Deve buscar uma cidade e não encontrar nenhuma", async () => {
-  const cityRepository = new CityRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const cityRepository = repositoryFactory.createCityRepository()
   const getCities = new GetCities(cityRepository)
   const cities = await getCities.execute()
   expect(cities.length).toBe(0)

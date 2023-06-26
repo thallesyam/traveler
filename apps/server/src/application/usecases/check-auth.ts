@@ -1,6 +1,6 @@
 import { Token } from "@/application/gateways"
 
-export default class CheckAuth {
+export class CheckAuth {
   constructor(readonly tokenGateway: Token) {}
 
   async execute(input: Input): Promise<Output> {

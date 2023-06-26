@@ -1,10 +1,11 @@
 import { expect, test } from "vitest"
-import { CityRepositoryMemory } from "@/infra/repositories/memory"
 import { SaveCity, UpdateCity } from "@/application/usecases"
 import { City } from "@/domain/entities"
+import { MemoryRepository } from "@/infra/factories"
 
 test("Deve editar todos os dados de uma cidade com sucesso", async () => {
-  const cityRepository = new CityRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const cityRepository = repositoryFactory.createCityRepository()
   const input = {
     name: "Rio de Janeiro",
     images: ["fake-image"],
@@ -29,7 +30,8 @@ test("Deve editar todos os dados de uma cidade com sucesso", async () => {
 })
 
 test("Deve editar apenas um dos dados de uma cidade com sucesso utilizando nome", async () => {
-  const cityRepository = new CityRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const cityRepository = repositoryFactory.createCityRepository()
   const input = {
     name: "Rio de Janeiro",
     images: ["fake-image"],
@@ -56,7 +58,8 @@ test("Deve editar apenas um dos dados de uma cidade com sucesso utilizando nome"
 })
 
 test("Deve editar apenas um dos dados de uma cidade com sucesso utilizando descrição", async () => {
-  const cityRepository = new CityRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const cityRepository = repositoryFactory.createCityRepository()
   const input = {
     name: "Rio de Janeiro",
     images: ["fake-image"],
@@ -77,7 +80,8 @@ test("Deve editar apenas um dos dados de uma cidade com sucesso utilizando descr
 })
 
 test("Deve editar apenas um dos dados de uma cidade com sucesso utilizando imagens", async () => {
-  const cityRepository = new CityRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const cityRepository = repositoryFactory.createCityRepository()
   const input = {
     name: "Rio de Janeiro",
     images: ["fake-image"],
@@ -97,7 +101,8 @@ test("Deve editar apenas um dos dados de uma cidade com sucesso utilizando image
 })
 
 test("Deve tentar editar os dados de uma cidade com id errado", async () => {
-  const cityRepository = new CityRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const cityRepository = repositoryFactory.createCityRepository()
   const input = {
     name: "Rio de Janeiro",
     images: ["fake-image"],

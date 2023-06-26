@@ -16,51 +16,25 @@ import {
 import { PrismaClient } from "@prisma/client"
 
 export class DatabaseRepository implements RepositoryFactory {
-  userRepository?: UserRepository
-  commentRepository?: CommentRepository
-  localRepository?: LocalRepository
-  categoryRepository?: CategoryRepository
-  cityRepository?: CityRepository
-
   constructor(readonly prisma: PrismaClient) {}
 
   createUserRepository(): UserRepository {
-    if (!this.userRepository) {
-      this.userRepository = new UserRepositoryDatabase(this.prisma)
-    }
-
-    return this.userRepository
+    return new UserRepositoryDatabase(this.prisma)
   }
 
   createCommentRepository(): CommentRepository {
-    if (!this.commentRepository) {
-      this.commentRepository = new CommentRepositoryDatabase(this.prisma)
-    }
-
-    return this.commentRepository
+    return new CommentRepositoryDatabase(this.prisma)
   }
 
   createLocalRepository(): LocalRepository {
-    if (!this.localRepository) {
-      this.localRepository = new LocalRepositoryDatabase(this.prisma)
-    }
-
-    return this.localRepository
+    return new LocalRepositoryDatabase(this.prisma)
   }
 
   createCategoryRepository(): CategoryRepository {
-    if (!this.categoryRepository) {
-      this.categoryRepository = new CategoryRepositoryDatabase(this.prisma)
-    }
-
-    return this.categoryRepository
+    return new CategoryRepositoryDatabase(this.prisma)
   }
 
   createCityRepository(): CityRepository {
-    if (!this.cityRepository) {
-      this.cityRepository = new CityRepositoryDatabase(this.prisma)
-    }
-
-    return this.cityRepository
+    return new CityRepositoryDatabase(this.prisma)
   }
 }

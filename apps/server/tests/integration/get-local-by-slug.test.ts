@@ -11,8 +11,13 @@ import {
   SaveCity,
   SaveLocal,
 } from "@/application/usecases"
+import { MemoryRepository } from "@/infra/factories"
 
 test("Deve buscar um local por slug", async () => {
+  const repositoryFactory = new MemoryRepository()
+  const cityRepository = repositoryFactory.createCityRepository()
+  const categoryRepository = repositoryFactory.createCategoryRepository()
+  const localRepository = repositoryFactory.createLocalRepository()
   const inputCity = {
     name: "Rio de Janeiro",
     images: ["fake-image"],
@@ -30,9 +35,6 @@ test("Deve buscar um local por slug", async () => {
     "533",
     { lat: 10, long: 10 }
   )
-  const cityRepository = new CityRepositoryMemory()
-  const categoryRepository = new CategoryRepositoryMemory()
-  const localRepository = new LocalRepositoryMemory()
   const openingHours = [
     {
       weekDay: 0,
@@ -107,7 +109,8 @@ test("Deve buscar um local por slug", async () => {
 })
 
 test("Deve tentar buscar um local com slug inválido", async () => {
-  const localRepository = new LocalRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const localRepository = repositoryFactory.createLocalRepository()
   const getLocalBySlug = new GetLocalBySlug(localRepository)
   expect(
     async () => await getLocalBySlug.execute({ slug: "doce-e-companhia" })

@@ -1,20 +1,17 @@
 import { expect, test } from "vitest"
 import {
-  CategoryRepositoryMemory,
-  CityRepositoryMemory,
-  LocalRepositoryMemory,
-} from "@/infra/repositories/memory"
-import {
   SaveCategory,
   DeleteCategory,
   SaveCity,
   SaveLocal,
 } from "@/application/usecases"
 import { Address, Category, City } from "@/domain/entities"
+import { MemoryRepository } from "@/infra/factories"
 
 test("Deve deletar uma categoria com sucesso", async () => {
-  const categoryRepository = new CategoryRepositoryMemory()
-  const localRepository = new LocalRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const categoryRepository = repositoryFactory.createCategoryRepository()
+  const localRepository = repositoryFactory.createLocalRepository()
   const input = {
     name: "Rio de Janeiro",
     image: "fake-image",
@@ -29,8 +26,10 @@ test("Deve deletar uma categoria com sucesso", async () => {
 })
 
 test("Deve deletar uma categoria com os locais", async () => {
-  const cityRepository = new CityRepositoryMemory()
-  const categoryRepository = new CategoryRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const cityRepository = repositoryFactory.createCityRepository()
+  const categoryRepository = repositoryFactory.createCategoryRepository()
+  const localRepository = repositoryFactory.createLocalRepository()
   const address = new Address(
     "08225260",
     "Rua Francisco da cunha",
@@ -82,7 +81,6 @@ test("Deve deletar uma categoria com os locais", async () => {
     cityId: city1.getCityId(),
     categoryId: category1.getCategoryId(),
   }
-  const localRepository = new LocalRepositoryMemory()
   const saveLocal = new SaveLocal(
     cityRepository,
     categoryRepository,
@@ -99,8 +97,9 @@ test("Deve deletar uma categoria com os locais", async () => {
 })
 
 test("Deve tentar deletar uma categoria inexistente", async () => {
-  const categoryRepository = new CategoryRepositoryMemory()
-  const localRepository = new LocalRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const categoryRepository = repositoryFactory.createCategoryRepository()
+  const localRepository = repositoryFactory.createLocalRepository()
   const input = {
     name: "Rio de Janeiro",
     image: "fake-image",

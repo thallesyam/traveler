@@ -1,18 +1,18 @@
 import { expect, test } from "vitest"
-import { Address } from "@/domain/entities"
-import {
-  CategoryRepositoryMemory,
-  CityRepositoryMemory,
-  LocalRepositoryMemory,
-} from "@/infra/repositories/memory"
 import {
   GetLocalById,
   SaveCategory,
   SaveCity,
   SaveLocal,
 } from "@/application/usecases"
+import { Address } from "@/domain/entities"
+import { MemoryRepository } from "@/infra/factories"
 
 test("Deve buscar um local por id", async () => {
+  const repositoryFactory = new MemoryRepository()
+  const cityRepository = repositoryFactory.createCityRepository()
+  const categoryRepository = repositoryFactory.createCategoryRepository()
+  const localRepository = repositoryFactory.createLocalRepository()
   const inputCity = {
     name: "Rio de Janeiro",
     images: ["fake-image"],
@@ -69,9 +69,6 @@ test("Deve buscar um local por id", async () => {
       close: new Date().setHours(18, 0, 0, 0) / 1000,
     },
   ]
-  const cityRepository = new CityRepositoryMemory()
-  const categoryRepository = new CategoryRepositoryMemory()
-  const localRepository = new LocalRepositoryMemory()
   const saveCity = new SaveCity(cityRepository)
   const saveCategory = new SaveCategory(categoryRepository)
   const saveLocal = new SaveLocal(
@@ -109,7 +106,8 @@ test("Deve buscar um local por id", async () => {
 })
 
 test("Deve tentar buscar um local com id inválido", async () => {
-  const localRepository = new LocalRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const localRepository = repositoryFactory.createLocalRepository()
   const getLocalById = new GetLocalById(localRepository)
   expect(async () => await getLocalById.execute({ id: "" })).rejects.toThrow(
     new Error("Local not found")

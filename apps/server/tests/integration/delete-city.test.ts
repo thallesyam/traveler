@@ -1,11 +1,11 @@
 import { expect, test } from "vitest"
-import { CityRepositoryMemory } from "@/infra/repositories/memory"
-import { SaveCity } from "@/application/usecases"
-import { DeleteCity } from "@/application/usecases/delete-city"
+import { SaveCity, DeleteCity } from "@/application/usecases"
 import { City } from "@/domain/entities"
+import { MemoryRepository } from "@/infra/factories"
 
 test("Deve deletar uma cidade com sucesso", async () => {
-  const cityRepository = new CityRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const cityRepository = repositoryFactory.createCityRepository()
   const input = {
     name: "Rio de Janeiro",
     images: ["fake-image"],
@@ -22,7 +22,8 @@ test("Deve deletar uma cidade com sucesso", async () => {
 })
 
 test("Deve tentar deletar uma cidade inexistente", async () => {
-  const cityRepository = new CityRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const cityRepository = repositoryFactory.createCityRepository()
   const input = {
     name: "Rio de Janeiro",
     images: ["fake-image"],

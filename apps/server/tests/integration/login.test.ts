@@ -1,18 +1,17 @@
 import { test, expect } from "vitest"
-
-import { User } from "@/domain/entities"
-import { UserRepositoryMemory } from "@/infra/repositories/memory"
 import { Login } from "@/application/usecases"
+import { User } from "@/domain/entities"
 import { JsonWebToken } from "@/infra/gateways"
+import { MemoryRepository } from "@/infra/factories"
 
 test("Deve realizar o login com sucesso", async () => {
+  const repositoryFactory = new MemoryRepository()
+  const userRepository = repositoryFactory.createUserRepository()
   const user = await User.create(
     "Thalles Ian",
     "thallesyam@gmail.com",
     "admin@123"
   )
-
-  const userRepository = new UserRepositoryMemory()
   await userRepository.save(user)
   const input = {
     email: user.email,
@@ -25,14 +24,14 @@ test("Deve realizar o login com sucesso", async () => {
 })
 
 test("Deve realizar o login com um email inválido", async () => {
+  const repositoryFactory = new MemoryRepository()
+  const userRepository = repositoryFactory.createUserRepository()
   const user = await User.create(
     "Thalles Ian",
     "thallesyam@gmail.com",
     "admin@123"
   )
-  const userRepository = new UserRepositoryMemory()
   await userRepository.save(user)
-
   const input = {
     email: "thallesyam1@gmail.com",
     password: "admin@123",
@@ -45,12 +44,13 @@ test("Deve realizar o login com um email inválido", async () => {
 })
 
 test("Deve realizar o login com uma senha inválida", async () => {
+  const repositoryFactory = new MemoryRepository()
+  const userRepository = repositoryFactory.createUserRepository()
   const user = await User.create(
     "Thalles Ian",
     "thallesyam@gmail.com",
     "admin@123"
   )
-  const userRepository = new UserRepositoryMemory()
   await userRepository.save(user)
   const input = {
     email: user.email,
@@ -64,12 +64,13 @@ test("Deve realizar o login com uma senha inválida", async () => {
 })
 
 test("Deve realizar o login com uma senha inválida", async () => {
+  const repositoryFactory = new MemoryRepository()
+  const userRepository = repositoryFactory.createUserRepository()
   const user = await User.create(
     "Thalles Ian",
     "thallesyam@gmail.com",
     "admin@123"
   )
-  const userRepository = new UserRepositoryMemory()
   await userRepository.save(user)
   const input = {
     email: "thallesyam1@gmail.com",

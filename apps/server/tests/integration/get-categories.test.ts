@@ -1,10 +1,10 @@
 import { expect, test } from "vitest"
-import { CategoryRepositoryMemory } from "@/infra/repositories/memory"
-import { SaveCategory } from "@/application/usecases"
-import { GetCategories } from "@/application/usecases"
+import { SaveCategory, GetCategories } from "@/application/usecases"
+import { MemoryRepository } from "@/infra/factories"
 
 test("Deve buscar todas as categorias com sucesso", async () => {
-  const categoryRepository = new CategoryRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const categoryRepository = repositoryFactory.createCategoryRepository()
   const input = {
     name: "Rio de Janeiro",
     image: "fake-image",
@@ -17,7 +17,8 @@ test("Deve buscar todas as categorias com sucesso", async () => {
 })
 
 test("Deve buscar uma categorias e não encontrar nenhuma", async () => {
-  const categoryRepository = new CategoryRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const categoryRepository = repositoryFactory.createCategoryRepository()
   const getCategories = new GetCategories(categoryRepository)
   const cities = await getCategories.execute()
   expect(cities.length).toBe(0)

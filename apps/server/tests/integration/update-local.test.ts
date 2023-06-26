@@ -11,6 +11,7 @@ import {
   UpdateLocal,
 } from "@/application/usecases"
 import { Address, Category, City } from "@/domain/entities"
+import { MemoryRepository } from "@/infra/factories"
 
 const mockOpeningHours = [
   {
@@ -51,8 +52,10 @@ const mockOpeningHours = [
 ]
 
 test("Deve editar um local com sucesso utilizando os horarios de atendimento", async () => {
-  const cityRepository = new CityRepositoryMemory()
-  const categoryRepository = new CategoryRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const cityRepository = repositoryFactory.createCityRepository()
+  const categoryRepository = repositoryFactory.createCategoryRepository()
+  const localRepository = repositoryFactory.createLocalRepository()
   const address = new Address(
     "08225260",
     "Rua Francisco da cunha",
@@ -94,7 +97,6 @@ test("Deve editar um local com sucesso utilizando os horarios de atendimento", a
     cityId: city.getCityId(),
     categoryId: category.getCategoryId(),
   }
-  const localRepository = new LocalRepositoryMemory()
   const saveLocal = new SaveLocal(
     cityRepository,
     categoryRepository,
@@ -118,8 +120,10 @@ test("Deve editar um local com sucesso utilizando os horarios de atendimento", a
 })
 
 test("Deve editar um local com sucesso utilizando o nome", async () => {
-  const cityRepository = new CityRepositoryMemory()
-  const categoryRepository = new CategoryRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const cityRepository = repositoryFactory.createCityRepository()
+  const categoryRepository = repositoryFactory.createCategoryRepository()
+  const localRepository = repositoryFactory.createLocalRepository()
   const address = new Address(
     "08225260",
     "Rua Francisco da cunha",
@@ -151,7 +155,6 @@ test("Deve editar um local com sucesso utilizando o nome", async () => {
     cityId: city.getCityId(),
     categoryId: category.getCategoryId(),
   }
-  const localRepository = new LocalRepositoryMemory()
   const saveLocal = new SaveLocal(
     cityRepository,
     categoryRepository,
@@ -175,8 +178,10 @@ test("Deve editar um local com sucesso utilizando o nome", async () => {
 })
 
 test("Deve editar um local com sucesso utilizando o id da categoria", async () => {
-  const cityRepository = new CityRepositoryMemory()
-  const categoryRepository = new CategoryRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const cityRepository = repositoryFactory.createCityRepository()
+  const categoryRepository = repositoryFactory.createCategoryRepository()
+  const localRepository = repositoryFactory.createLocalRepository()
   const address = new Address(
     "08225260",
     "Rua Francisco da cunha",
@@ -210,7 +215,6 @@ test("Deve editar um local com sucesso utilizando o id da categoria", async () =
     cityId: city.getCityId(),
     categoryId: category.getCategoryId(),
   }
-  const localRepository = new LocalRepositoryMemory()
   const saveLocal = new SaveLocal(
     cityRepository,
     categoryRepository,
@@ -233,8 +237,10 @@ test("Deve editar um local com sucesso utilizando o id da categoria", async () =
 })
 
 test("Deve tentar editar um local com id inválido", async () => {
-  const cityRepository = new CityRepositoryMemory()
-  const categoryRepository = new CategoryRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const cityRepository = repositoryFactory.createCityRepository()
+  const categoryRepository = repositoryFactory.createCategoryRepository()
+  const localRepository = repositoryFactory.createLocalRepository()
   const address = new Address(
     "08225260",
     "Rua Francisco da cunha",
@@ -266,7 +272,6 @@ test("Deve tentar editar um local com id inválido", async () => {
     cityId: city.getCityId(),
     categoryId: category.getCategoryId(),
   }
-  const localRepository = new LocalRepositoryMemory()
   const saveLocal = new SaveLocal(
     cityRepository,
     categoryRepository,

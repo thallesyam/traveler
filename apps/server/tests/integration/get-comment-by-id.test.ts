@@ -1,11 +1,5 @@
 import { expect, test } from "vitest"
 import {
-  CategoryRepositoryMemory,
-  CityRepositoryMemory,
-  CommentRepositoryMemory,
-  LocalRepositoryMemory,
-} from "@/infra/repositories/memory"
-import {
   GetCommentById,
   GetLocalBySlug,
   SaveCategory,
@@ -14,12 +8,14 @@ import {
   SaveLocal,
 } from "@/application/usecases"
 import { Address, Category, City } from "@/domain/entities"
+import { MemoryRepository } from "@/infra/factories"
 
 test("Deve buscar uma comentario por id com sucesso", async () => {
-  const commentRepository = new CommentRepositoryMemory()
-  const cityRepository = new CityRepositoryMemory()
-  const categoryRepository = new CategoryRepositoryMemory()
-  const localRepository = new LocalRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const cityRepository = repositoryFactory.createCityRepository()
+  const categoryRepository = repositoryFactory.createCategoryRepository()
+  const localRepository = repositoryFactory.createLocalRepository()
+  const commentRepository = repositoryFactory.createCommentRepository()
   const address = new Address(
     "08225260",
     "Rua Francisco da cunha",
@@ -77,10 +73,11 @@ test("Deve buscar uma comentario por id com sucesso", async () => {
 })
 
 test("Deve buscar uma comentario com id inexistente", async () => {
-  const commentRepository = new CommentRepositoryMemory()
-  const cityRepository = new CityRepositoryMemory()
-  const categoryRepository = new CategoryRepositoryMemory()
-  const localRepository = new LocalRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const cityRepository = repositoryFactory.createCityRepository()
+  const categoryRepository = repositoryFactory.createCategoryRepository()
+  const localRepository = repositoryFactory.createLocalRepository()
+  const commentRepository = repositoryFactory.createCommentRepository()
   const address = new Address(
     "08225260",
     "Rua Francisco da cunha",

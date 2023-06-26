@@ -15,11 +15,11 @@ import {
 } from "../repositories/memory"
 
 export class MemoryRepository implements RepositoryFactory {
-  userRepository?: UserRepository
-  commentRepository?: CommentRepository
-  localRepository?: LocalRepository
-  categoryRepository?: CategoryRepository
-  cityRepository?: CityRepository
+  private userRepository?: UserRepository
+  private commentRepository?: CommentRepository
+  private localRepository?: LocalRepository
+  private categoryRepository?: CategoryRepository
+  private cityRepository?: CityRepository
 
   createUserRepository(): UserRepository {
     if (!this.userRepository) {

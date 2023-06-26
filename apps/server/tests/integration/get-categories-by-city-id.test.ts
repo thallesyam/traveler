@@ -1,10 +1,5 @@
 import { expect, test } from "vitest"
 import {
-  CategoryRepositoryMemory,
-  CityRepositoryMemory,
-  LocalRepositoryMemory,
-} from "@/infra/repositories/memory"
-import {
   GetCategoryByCityId,
   GetCityBySlug,
   SaveCategory,
@@ -12,9 +7,13 @@ import {
   SaveLocal,
 } from "@/application/usecases"
 import { Address, Category, City } from "@/domain/entities"
+import { MemoryRepository } from "@/infra/factories"
 
 test("Deve retornar a quantidade de locais que existe na categoria de uma cidade", async () => {
-  const cityRepository = new CityRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const cityRepository = repositoryFactory.createCityRepository()
+  const categoryRepository = repositoryFactory.createCategoryRepository()
+  const localRepository = repositoryFactory.createLocalRepository()
   const input = {
     name: "Rio de Janeiro",
     images: ["fake-image"],
@@ -30,7 +29,6 @@ test("Deve retornar a quantidade de locais que existe na categoria de uma cidade
   const saveCity = new SaveCity(cityRepository)
   await saveCity.execute(input)
   await saveCity.execute(input1)
-  const categoryRepository = new CategoryRepositoryMemory()
   const categoryInput = {
     name: "Pontos turisticos",
     image: "fake-image",
@@ -87,7 +85,6 @@ test("Deve retornar a quantidade de locais que existe na categoria de uma cidade
     cityId: city.getCityId(),
     categoryId: category1.getCategoryId(),
   }
-  const localRepository = new LocalRepositoryMemory()
   const saveLocal = new SaveLocal(
     cityRepository,
     categoryRepository,

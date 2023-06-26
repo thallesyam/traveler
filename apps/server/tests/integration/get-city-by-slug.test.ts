@@ -1,11 +1,11 @@
 import { expect, test } from "vitest"
-import { CityRepositoryMemory } from "@/infra/repositories/memory"
-import { SaveCity } from "@/application/usecases"
-import { GetCityBySlug } from "@/application/usecases"
+import { SaveCity, GetCityBySlug } from "@/application/usecases"
 import { City } from "@/domain/entities"
+import { MemoryRepository } from "@/infra/factories"
 
 test("Deve buscar uma cidade por slug com sucesso", async () => {
-  const cityRepository = new CityRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const cityRepository = repositoryFactory.createCityRepository()
   const input = {
     name: "Rio de Janeiro",
     images: ["fake-image"],
@@ -23,7 +23,8 @@ test("Deve buscar uma cidade por slug com sucesso", async () => {
 })
 
 test("Deve buscar uma cidade com slug inexistente", async () => {
-  const cityRepository = new CityRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const cityRepository = repositoryFactory.createCityRepository()
   const input = {
     name: "Rio de Janeiro",
     images: ["fake-image"],

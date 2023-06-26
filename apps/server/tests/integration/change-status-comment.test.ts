@@ -1,11 +1,5 @@
 import { expect, test } from "vitest"
 import {
-  CategoryRepositoryMemory,
-  CityRepositoryMemory,
-  CommentRepositoryMemory,
-  LocalRepositoryMemory,
-} from "@/infra/repositories/memory"
-import {
   GetLocalBySlug,
   SaveCategory,
   SaveCity,
@@ -14,12 +8,15 @@ import {
   ApproveComment,
 } from "@/application/usecases"
 import { Address, Category, City } from "@/domain/entities"
+import { MemoryRepository } from "@/infra/factories"
 
 test("Deve aprovar um comentário com sucesso", async () => {
-  const commentRepository = new CommentRepositoryMemory()
-  const cityRepository = new CityRepositoryMemory()
-  const categoryRepository = new CategoryRepositoryMemory()
-  const localRepository = new LocalRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const cityRepository = repositoryFactory.createCityRepository()
+  const categoryRepository = repositoryFactory.createCategoryRepository()
+  const localRepository = repositoryFactory.createLocalRepository()
+  const commentRepository = repositoryFactory.createCommentRepository()
+
   const address = new Address(
     "08225260",
     "Rua Francisco da cunha",
@@ -79,10 +76,12 @@ test("Deve aprovar um comentário com sucesso", async () => {
 })
 
 test("Deve aprovar um comentário com sucesso e reprovar outro", async () => {
-  const commentRepository = new CommentRepositoryMemory()
-  const cityRepository = new CityRepositoryMemory()
-  const categoryRepository = new CategoryRepositoryMemory()
-  const localRepository = new LocalRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const cityRepository = repositoryFactory.createCityRepository()
+  const categoryRepository = repositoryFactory.createCategoryRepository()
+  const localRepository = repositoryFactory.createLocalRepository()
+  const commentRepository = repositoryFactory.createCommentRepository()
+
   const address = new Address(
     "08225260",
     "Rua Francisco da cunha",
@@ -156,10 +155,12 @@ test("Deve aprovar um comentário com sucesso e reprovar outro", async () => {
 })
 
 test("Deve tentar aprovar um comentário com id inválido", async () => {
-  const commentRepository = new CommentRepositoryMemory()
-  const cityRepository = new CityRepositoryMemory()
-  const categoryRepository = new CategoryRepositoryMemory()
-  const localRepository = new LocalRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const cityRepository = repositoryFactory.createCityRepository()
+  const categoryRepository = repositoryFactory.createCategoryRepository()
+  const localRepository = repositoryFactory.createLocalRepository()
+  const commentRepository = repositoryFactory.createCommentRepository()
+
   const address = new Address(
     "08225260",
     "Rua Francisco da cunha",

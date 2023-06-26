@@ -1,10 +1,5 @@
-import { beforeAll, beforeEach, expect, test } from "vitest"
-import {
-  CategoryRepositoryMemory,
-  CityRepositoryMemory,
-  CommentRepositoryMemory,
-  LocalRepositoryMemory,
-} from "@/infra/repositories/memory"
+import { expect, test } from "vitest"
+
 import {
   ApproveComment,
   GetLocalBySlug,
@@ -14,18 +9,14 @@ import {
   SaveLocal,
 } from "@/application/usecases"
 import { Address, Category, City } from "@/domain/entities"
-import {
-  CategoryRepositoryDatabase,
-  CityRepositoryDatabase,
-  CommentRepositoryDatabase,
-  LocalRepositoryDatabase,
-} from "@/infra/repositories/database/prisma"
+import { MemoryRepository } from "@/infra/factories"
 
 test("Deve criar um comentário com sucesso", async () => {
-  const commentRepository = new CommentRepositoryMemory()
-  const cityRepository = new CityRepositoryMemory()
-  const categoryRepository = new CategoryRepositoryMemory()
-  const localRepository = new LocalRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const cityRepository = repositoryFactory.createCityRepository()
+  const categoryRepository = repositoryFactory.createCategoryRepository()
+  const localRepository = repositoryFactory.createLocalRepository()
+  const commentRepository = repositoryFactory.createCommentRepository()
   const address = new Address(
     "08225260",
     "Rua Francisco da cunha",
@@ -94,10 +85,11 @@ test("Deve criar um comentário com sucesso", async () => {
 })
 
 test("Deve criar dois comentários com sucesso e calcular corretamente a pontuação de avaliação", async () => {
-  const commentRepository = new CommentRepositoryMemory()
-  const cityRepository = new CityRepositoryMemory()
-  const categoryRepository = new CategoryRepositoryMemory()
-  const localRepository = new LocalRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const cityRepository = repositoryFactory.createCityRepository()
+  const categoryRepository = repositoryFactory.createCategoryRepository()
+  const localRepository = repositoryFactory.createLocalRepository()
+  const commentRepository = repositoryFactory.createCommentRepository()
   const address = new Address(
     "08225260",
     "Rua Francisco da cunha",
@@ -172,10 +164,10 @@ test("Deve criar dois comentários com sucesso e calcular corretamente a pontua�
 })
 
 test("Deve tentar criar um comentário com localId inválido", async () => {
-  const commentRepository = new CommentRepositoryMemory()
-  const cityRepository = new CityRepositoryMemory()
-  const categoryRepository = new CategoryRepositoryMemory()
-  const localRepository = new LocalRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const categoryRepository = repositoryFactory.createCategoryRepository()
+  const localRepository = repositoryFactory.createLocalRepository()
+  const commentRepository = repositoryFactory.createCommentRepository()
   const saveCategory = new SaveCategory(categoryRepository)
   await saveCategory.execute({ image: "fake-image", name: "Pontos turisticos" })
   const inputComment = {

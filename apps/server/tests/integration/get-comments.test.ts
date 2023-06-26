@@ -1,11 +1,5 @@
 import { expect, test } from "vitest"
 import {
-  CategoryRepositoryMemory,
-  CityRepositoryMemory,
-  CommentRepositoryMemory,
-  LocalRepositoryMemory,
-} from "@/infra/repositories/memory"
-import {
   GetComments,
   GetLocalBySlug,
   SaveCategory,
@@ -14,12 +8,14 @@ import {
   SaveLocal,
 } from "@/application/usecases"
 import { Address, Category, City } from "@/domain/entities"
+import { MemoryRepository } from "@/infra/factories"
 
 test("Deve buscar todos os comentário com sucesso", async () => {
-  const commentRepository = new CommentRepositoryMemory()
-  const cityRepository = new CityRepositoryMemory()
-  const categoryRepository = new CategoryRepositoryMemory()
-  const localRepository = new LocalRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const cityRepository = repositoryFactory.createCityRepository()
+  const categoryRepository = repositoryFactory.createCategoryRepository()
+  const localRepository = repositoryFactory.createLocalRepository()
+  const commentRepository = repositoryFactory.createCommentRepository()
   const address = new Address(
     "08225260",
     "Rua Francisco da cunha",
@@ -74,7 +70,8 @@ test("Deve buscar todos os comentário com sucesso", async () => {
 })
 
 test("Deve buscar os comentários e retornar uma lista vazia", async () => {
-  const commentRepository = new CommentRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const commentRepository = repositoryFactory.createCommentRepository()
   const getComments = new GetComments(commentRepository)
   const comments = await getComments.execute()
   expect(comments).toHaveLength(0)

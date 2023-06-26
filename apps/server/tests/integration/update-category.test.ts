@@ -2,9 +2,11 @@ import { expect, test } from "vitest"
 import { CategoryRepositoryMemory } from "@/infra/repositories/memory"
 import { SaveCategory, UpdateCategory } from "@/application/usecases"
 import { Category } from "@/domain/entities"
+import { MemoryRepository } from "@/infra/factories"
 
 test("Deve editar todos os dados de uma categoria com sucesso", async () => {
-  const categoryRepository = new CategoryRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const categoryRepository = repositoryFactory.createCategoryRepository()
   const input = {
     name: "Ponto turistico",
     image: "fake-image",
@@ -29,7 +31,8 @@ test("Deve editar todos os dados de uma categoria com sucesso", async () => {
 })
 
 test("Deve editar apenas um dos dados de uma categoria com sucesso utilizando nome", async () => {
-  const categoryRepository = new CategoryRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const categoryRepository = repositoryFactory.createCategoryRepository()
   const input = {
     name: "Ponto turistico",
     image: "fake-image",
@@ -57,7 +60,8 @@ test("Deve editar apenas um dos dados de uma categoria com sucesso utilizando no
 })
 
 test("Deve editar apenas um dos dados de uma categoria com sucesso utilizando imagem", async () => {
-  const categoryRepository = new CategoryRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const categoryRepository = repositoryFactory.createCategoryRepository()
   const input = {
     name: "Ponto turistico",
     image: "fake-image",
@@ -80,7 +84,8 @@ test("Deve editar apenas um dos dados de uma categoria com sucesso utilizando im
 })
 
 test("Deve tentar editar os dados de uma categoria com id errado", async () => {
-  const categoryRepository = new CategoryRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const categoryRepository = repositoryFactory.createCategoryRepository()
   const input = {
     name: "Ponto turistico",
     image: "fake-image",

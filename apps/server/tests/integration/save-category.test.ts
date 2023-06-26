@@ -1,9 +1,10 @@
 import { expect, test } from "vitest"
 import { SaveCategory } from "@/application/usecases"
-import { CategoryRepositoryMemory } from "@/infra/repositories/memory"
+import { MemoryRepository } from "@/infra/factories"
 
 test("Deve criar uma categoria com sucesso", async () => {
-  const categoryRepository = new CategoryRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const categoryRepository = repositoryFactory.createCategoryRepository()
   const input = {
     name: "Rio de Janeiro",
     image: "fake-image",
@@ -15,7 +16,8 @@ test("Deve criar uma categoria com sucesso", async () => {
 })
 
 test("Deve tentar criar uma categoria duplicada", async () => {
-  const categoryRepository = new CategoryRepositoryMemory()
+  const repositoryFactory = new MemoryRepository()
+  const categoryRepository = repositoryFactory.createCategoryRepository()
   const input = {
     name: "Rio de Janeiro",
     image: "fake-image",
