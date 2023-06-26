@@ -8,10 +8,10 @@ export class DeleteCategory {
 
   async execute(input: Input): Promise<void> {
     const category = await this.categoryRepository.findById(input.id)
-    await this.categoryRepository.delete(category.getCategoryId())
     category
       .getLocalsInCategory()
       .map(async (local) => await this.localRepository.delete(local.localId))
+    await this.categoryRepository.delete(category.getCategoryId())
 
     return
   }

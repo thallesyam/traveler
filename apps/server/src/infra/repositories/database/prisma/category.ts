@@ -9,7 +9,7 @@ export class CategoryRepositoryDatabase implements CategoryRepository {
     await this.prisma.category.create({
       data: {
         name: category.name,
-        image: category.name,
+        image: category.image,
       },
     })
   }
@@ -32,6 +32,7 @@ export class CategoryRepositoryDatabase implements CategoryRepository {
     if (!category) return undefined
 
     const categoryToEntity = new Category(category.name, category.image)
+
     categoryToEntity.setCategoryId(category.id)
     return categoryToEntity
   }
@@ -51,13 +52,7 @@ export class CategoryRepositoryDatabase implements CategoryRepository {
     cityId: string
   ): Promise<{ name: string; quantity: number }[]> {
     const categories = await this.prisma.category.findMany({
-      include: { local: true },
-      where: {
-        id: "794e5913-d2bf-4ac8-8cf7-8472280956da",
-        local: {
-          some: { cityId },
-        },
-      },
+      include: { local: { where: { cityId } } },
     })
 
     return categories.map((category) => ({
@@ -77,6 +72,6 @@ export class CategoryRepositoryDatabase implements CategoryRepository {
   }
 
   async delete(id: string): Promise<void> {
-    this.prisma.category.delete({ where: { id } })
+    await this.prisma.category.delete({ where: { id } })
   }
 }
