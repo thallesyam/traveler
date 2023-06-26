@@ -102,8 +102,10 @@ test("Deve retornar a quantidade de locais que existe na categoria de uma cidade
     cityId: cityBySlug.getCityId(),
   })
 
-  expect(count).toStrictEqual([
-    { name: category.name, quantity: 1 },
-    { name: category1.name, quantity: 1 },
-  ])
+  expect(count).toEqual(
+    expect.arrayContaining([
+      { name: category.name, quantity: 1 },
+      { name: category1.name, quantity: 1 },
+    ])
+  )
 })

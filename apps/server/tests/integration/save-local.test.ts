@@ -99,9 +99,7 @@ test("Deve criar um local com sucesso", async () => {
 })
 
 test("Deve criar um local de destaque com sucesso", async () => {
-  // const cityRepository = new CityRepositoryMemory()
   const cityRepository = new CityRepositoryMemory()
-  // const categoryRepository = new CategoryRepositoryMemory()
   const categoryRepository = new CategoryRepositoryMemory()
   const address = new Address(
     "08225260",
@@ -135,7 +133,6 @@ test("Deve criar um local de destaque com sucesso", async () => {
     categoryId: category.getCategoryId(),
     isHightlight: true,
   }
-  // const localRepository = new LocalRepositoryMemory()
   const localRepository = new LocalRepositoryMemory()
   const saveLocal = new SaveLocal(
     cityRepository,
@@ -156,9 +153,7 @@ test("Deve criar um local de destaque com sucesso", async () => {
 })
 
 test("Deve tentar criar um local inválido", async () => {
-  // const cityRepository = new CityRepositoryMemory()
   const cityRepository = new CityRepositoryMemory()
-  // const categoryRepository = new CategoryRepositoryMemory()
   const categoryRepository = new CategoryRepositoryMemory()
   const address = new Address(
     "08225260",
@@ -191,7 +186,6 @@ test("Deve tentar criar um local inválido", async () => {
     cityId: city.getCityId(),
     categoryId: category.getCategoryId(),
   }
-  // const localRepository = new LocalRepositoryMemory()
   const localRepository = new LocalRepositoryMemory()
   const saveLocal = new SaveLocal(
     cityRepository,
