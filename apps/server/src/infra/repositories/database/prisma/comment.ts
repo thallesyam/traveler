@@ -2,7 +2,7 @@ import { Comment } from "@/domain/entities"
 import { CommentRepository } from "@/application/repositories"
 import { PrismaClient } from "@prisma/client"
 
-type CommentDatabaseModel = {
+export type CommentDatabaseModel = {
   id: string
   name: string
   image: string

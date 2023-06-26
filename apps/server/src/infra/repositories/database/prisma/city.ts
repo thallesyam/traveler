@@ -1,31 +1,10 @@
 import { PrismaClient } from "@prisma/client"
-import { Address, City, Local } from "@/domain/entities"
+import { City } from "@/domain/entities"
 import { CityRepository } from "@/application/repositories"
 import {
-  CategoryDatabaseModel,
-  toEntityCategory,
+  LocalDatabaseModel,
+  toEntityLocal,
 } from "@/infra/repositories/database/prisma"
-
-type IHours = {
-  openingHours: {
-    weekDay: number
-    open: number | null
-    close: number | null
-  }[]
-}
-
-type LocalDatabaseModel = {
-  id: string
-  isHightlight: boolean
-  address: Address
-  category: CategoryDatabaseModel
-  openingHours: IHours
-  name: string
-  description: string
-  images: string[]
-  cityId: string
-  observation?: string
-}
 
 type CityDatabaseModel = {
   id: string
@@ -116,30 +95,7 @@ export function toEntityCity(city: CityDatabaseModel) {
   cityToEntity.setCityId(city.id)
 
   city.locals.map((local) => {
-    const addressData = local.address
-    const { openingHours } = local.openingHours
-
-    const address = new Address(
-      addressData.cep,
-      addressData.street,
-      addressData.neighborhood,
-      addressData.number,
-      addressData.coordinate
-    )
-
-    const category = toEntityCategory(local.category)
-    const localToEntity = new Local(
-      local.name,
-      local.description,
-      local.images,
-      address,
-      openingHours,
-      local.cityId,
-      category,
-      local?.observation ?? ""
-    )
-    localToEntity.setLocalId(local.id)
-    localToEntity.setIsHightlight(!!local.isHightlight)
+    const localToEntity = toEntityLocal(local)
     cityToEntity.setLocal(localToEntity)
   })
 
