@@ -8,8 +8,8 @@
   },
   "scripts": {
     "dev": "tsx watch src/main.ts",
-    "test": "vitest",
-    "test:cov": "vitest --coverage"
+    "test": "vitest --no-threads",
+    "test:cov": "vitest --coverage --no-threads"
   },
   "keywords": [],
   "author": "",
