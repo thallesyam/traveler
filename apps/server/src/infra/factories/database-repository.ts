@@ -5,7 +5,7 @@ import {
   CategoryRepository,
   CityRepository,
 } from "@/application/repositories"
-import { RepositoryFactory } from "@/domain/factories"
+import { RepositoryFactory } from "@/application/factories"
 import {
   CategoryRepositoryDatabase,
   CityRepositoryDatabase,
