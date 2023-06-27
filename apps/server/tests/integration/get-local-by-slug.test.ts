@@ -1,20 +1,31 @@
-import { expect, test } from "vitest"
-import { Address } from "@/domain/entities"
-import {
-  CategoryRepositoryMemory,
-  CityRepositoryMemory,
-  LocalRepositoryMemory,
-} from "@/infra/repositories/memory"
+import { beforeAll, beforeEach, expect, test } from "vitest"
+import { PrismaClient } from "@prisma/client"
 import {
   GetLocalBySlug,
   SaveCategory,
   SaveCity,
   SaveLocal,
 } from "@/application/usecases"
-import { MemoryRepository } from "@/infra/factories"
+import { Address } from "@/domain/entities"
+import { DatabaseRepository, MemoryRepository } from "@/infra/factories"
+
+// let prisma: PrismaClient
+
+// beforeAll(() => {
+//   prisma = new PrismaClient()
+// })
+
+// beforeEach(async () => {
+//   await prisma.comment.deleteMany()
+//   await prisma.local.deleteMany()
+//   await prisma.category.deleteMany()
+//   await prisma.city.deleteMany()
+//   await prisma.user.deleteMany()
+// })
 
 test("Deve buscar um local por slug", async () => {
   const repositoryFactory = new MemoryRepository()
+  // const repositoryFactory = new DatabaseRepository(prisma)
   const cityRepository = repositoryFactory.createCityRepository()
   const categoryRepository = repositoryFactory.createCategoryRepository()
   const localRepository = repositoryFactory.createLocalRepository()
@@ -110,6 +121,7 @@ test("Deve buscar um local por slug", async () => {
 
 test("Deve tentar buscar um local com slug inválido", async () => {
   const repositoryFactory = new MemoryRepository()
+  // const repositoryFactory = new DatabaseRepository(prisma)
   const localRepository = repositoryFactory.createLocalRepository()
   const getLocalBySlug = new GetLocalBySlug(localRepository)
   expect(

@@ -1,11 +1,27 @@
-import { test, expect } from "vitest"
+import { test, expect, beforeAll, beforeEach } from "vitest"
+import { PrismaClient } from "@prisma/client"
 import { Login } from "@/application/usecases"
 import { User } from "@/domain/entities"
 import { JsonWebToken } from "@/infra/gateways"
-import { MemoryRepository } from "@/infra/factories"
+import { DatabaseRepository, MemoryRepository } from "@/infra/factories"
+
+// let prisma: PrismaClient
+
+// beforeAll(() => {
+//   prisma = new PrismaClient()
+// })
+
+// beforeEach(async () => {
+//   await prisma.comment.deleteMany()
+//   await prisma.local.deleteMany()
+//   await prisma.category.deleteMany()
+//   await prisma.city.deleteMany()
+//   await prisma.user.deleteMany()
+// })
 
 test("Deve realizar o login com sucesso", async () => {
   const repositoryFactory = new MemoryRepository()
+  // const repositoryFactory = new DatabaseRepository(prisma)
   const userRepository = repositoryFactory.createUserRepository()
   const user = await User.create(
     "Thalles Ian",
@@ -25,6 +41,7 @@ test("Deve realizar o login com sucesso", async () => {
 
 test("Deve realizar o login com um email inválido", async () => {
   const repositoryFactory = new MemoryRepository()
+  // const repositoryFactory = new DatabaseRepository(prisma)
   const userRepository = repositoryFactory.createUserRepository()
   const user = await User.create(
     "Thalles Ian",
@@ -45,6 +62,7 @@ test("Deve realizar o login com um email inválido", async () => {
 
 test("Deve realizar o login com uma senha inválida", async () => {
   const repositoryFactory = new MemoryRepository()
+  // const repositoryFactory = new DatabaseRepository(prisma)
   const userRepository = repositoryFactory.createUserRepository()
   const user = await User.create(
     "Thalles Ian",
@@ -65,6 +83,7 @@ test("Deve realizar o login com uma senha inválida", async () => {
 
 test("Deve realizar o login com uma senha inválida", async () => {
   const repositoryFactory = new MemoryRepository()
+  // const repositoryFactory = new DatabaseRepository(prisma)
   const userRepository = repositoryFactory.createUserRepository()
   const user = await User.create(
     "Thalles Ian",

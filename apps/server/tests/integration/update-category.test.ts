@@ -1,10 +1,25 @@
-import { expect, test } from "vitest"
-import { CategoryRepositoryMemory } from "@/infra/repositories/memory"
+import { beforeAll, beforeEach, expect, test } from "vitest"
+import { PrismaClient } from "@prisma/client"
 import { SaveCategory, UpdateCategory } from "@/application/usecases"
 import { Category } from "@/domain/entities"
-import { MemoryRepository } from "@/infra/factories"
+import { DatabaseRepository, MemoryRepository } from "@/infra/factories"
+
+// let prisma: PrismaClient
+
+// beforeAll(() => {
+//   prisma = new PrismaClient()
+// })
+
+// beforeEach(async () => {
+//   await prisma.comment.deleteMany()
+//   await prisma.local.deleteMany()
+//   await prisma.category.deleteMany()
+//   await prisma.city.deleteMany()
+//   await prisma.user.deleteMany()
+// })
 
 test("Deve editar todos os dados de uma categoria com sucesso", async () => {
+  // const repositoryFactory = new DatabaseRepository(prisma)
   const repositoryFactory = new MemoryRepository()
   const categoryRepository = repositoryFactory.createCategoryRepository()
   const input = {
@@ -31,6 +46,7 @@ test("Deve editar todos os dados de uma categoria com sucesso", async () => {
 })
 
 test("Deve editar apenas um dos dados de uma categoria com sucesso utilizando nome", async () => {
+  // const repositoryFactory = new DatabaseRepository(prisma)
   const repositoryFactory = new MemoryRepository()
   const categoryRepository = repositoryFactory.createCategoryRepository()
   const input = {
@@ -60,6 +76,7 @@ test("Deve editar apenas um dos dados de uma categoria com sucesso utilizando no
 })
 
 test("Deve editar apenas um dos dados de uma categoria com sucesso utilizando imagem", async () => {
+  // const repositoryFactory = new DatabaseRepository(prisma)
   const repositoryFactory = new MemoryRepository()
   const categoryRepository = repositoryFactory.createCategoryRepository()
   const input = {
@@ -84,6 +101,7 @@ test("Deve editar apenas um dos dados de uma categoria com sucesso utilizando im
 })
 
 test("Deve tentar editar os dados de uma categoria com id errado", async () => {
+  // const repositoryFactory = new DatabaseRepository(prisma)
   const repositoryFactory = new MemoryRepository()
   const categoryRepository = repositoryFactory.createCategoryRepository()
   const input = {

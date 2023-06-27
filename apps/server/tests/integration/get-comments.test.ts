@@ -1,4 +1,5 @@
-import { expect, test } from "vitest"
+import { beforeAll, beforeEach, expect, test } from "vitest"
+import { PrismaClient } from "@prisma/client"
 import {
   GetComments,
   GetLocalBySlug,
@@ -8,10 +9,25 @@ import {
   SaveLocal,
 } from "@/application/usecases"
 import { Address, Category, City } from "@/domain/entities"
-import { MemoryRepository } from "@/infra/factories"
+import { DatabaseRepository, MemoryRepository } from "@/infra/factories"
+
+// let prisma: PrismaClient
+
+// beforeAll(() => {
+//   prisma = new PrismaClient()
+// })
+
+// beforeEach(async () => {
+//   await prisma.comment.deleteMany()
+//   await prisma.local.deleteMany()
+//   await prisma.category.deleteMany()
+//   await prisma.city.deleteMany()
+//   await prisma.user.deleteMany()
+// })
 
 test("Deve buscar todos os comentário com sucesso", async () => {
   const repositoryFactory = new MemoryRepository()
+  // const repositoryFactory = new DatabaseRepository(prisma)
   const cityRepository = repositoryFactory.createCityRepository()
   const categoryRepository = repositoryFactory.createCategoryRepository()
   const localRepository = repositoryFactory.createLocalRepository()
@@ -71,6 +87,7 @@ test("Deve buscar todos os comentário com sucesso", async () => {
 
 test("Deve buscar os comentários e retornar uma lista vazia", async () => {
   const repositoryFactory = new MemoryRepository()
+  // const repositoryFactory = new DatabaseRepository(prisma)
   const commentRepository = repositoryFactory.createCommentRepository()
   const getComments = new GetComments(commentRepository)
   const comments = await getComments.execute()

@@ -1,9 +1,5 @@
-import { expect, test } from "vitest"
-import {
-  CategoryRepositoryMemory,
-  CityRepositoryMemory,
-  LocalRepositoryMemory,
-} from "@/infra/repositories/memory"
+import { beforeAll, beforeEach, expect, test } from "vitest"
+import { PrismaClient } from "@prisma/client"
 import {
   SaveCity,
   SaveLocal,
@@ -11,10 +7,25 @@ import {
   SaveCategory,
 } from "@/application/usecases"
 import { Address, Category, City } from "@/domain/entities"
-import { MemoryRepository } from "@/infra/factories"
+import { DatabaseRepository, MemoryRepository } from "@/infra/factories"
+
+// let prisma: PrismaClient
+
+// beforeAll(() => {
+//   prisma = new PrismaClient()
+// })
+
+// beforeEach(async () => {
+//   await prisma.comment.deleteMany()
+//   await prisma.local.deleteMany()
+//   await prisma.category.deleteMany()
+//   await prisma.city.deleteMany()
+//   await prisma.user.deleteMany()
+// })
 
 test("Deve deletar um local com sucesso", async () => {
   const repositoryFactory = new MemoryRepository()
+  // const repositoryFactory = new DatabaseRepository(prisma)
   const cityRepository = repositoryFactory.createCityRepository()
   const categoryRepository = repositoryFactory.createCategoryRepository()
   const localRepository = repositoryFactory.createLocalRepository()
@@ -77,6 +88,7 @@ test("Deve deletar um local com sucesso", async () => {
 
 test("Deve tentar deletar um local com id inválido", async () => {
   const repositoryFactory = new MemoryRepository()
+  // const repositoryFactory = new DatabaseRepository(prisma)
   const cityRepository = repositoryFactory.createCityRepository()
   const categoryRepository = repositoryFactory.createCategoryRepository()
   const localRepository = repositoryFactory.createLocalRepository()

@@ -1,4 +1,5 @@
-import { expect, test } from "vitest"
+import { beforeAll, beforeEach, expect, test } from "vitest"
+import { PrismaClient } from "@prisma/client"
 import {
   CategoryRepositoryMemory,
   CityRepositoryMemory,
@@ -11,7 +12,21 @@ import {
   UpdateLocal,
 } from "@/application/usecases"
 import { Address, Category, City } from "@/domain/entities"
-import { MemoryRepository } from "@/infra/factories"
+import { DatabaseRepository, MemoryRepository } from "@/infra/factories"
+
+// let prisma: PrismaClient
+
+// beforeAll(() => {
+//   prisma = new PrismaClient()
+// })
+
+// beforeEach(async () => {
+//   await prisma.comment.deleteMany()
+//   await prisma.local.deleteMany()
+//   await prisma.category.deleteMany()
+//   await prisma.city.deleteMany()
+//   await prisma.user.deleteMany()
+// })
 
 const mockOpeningHours = [
   {
@@ -52,6 +67,7 @@ const mockOpeningHours = [
 ]
 
 test("Deve editar um local com sucesso utilizando os horarios de atendimento", async () => {
+  // const repositoryFactory = new DatabaseRepository(prisma)
   const repositoryFactory = new MemoryRepository()
   const cityRepository = repositoryFactory.createCityRepository()
   const categoryRepository = repositoryFactory.createCategoryRepository()
@@ -120,6 +136,7 @@ test("Deve editar um local com sucesso utilizando os horarios de atendimento", a
 })
 
 test("Deve editar um local com sucesso utilizando o nome", async () => {
+  // const repositoryFactory = new DatabaseRepository(prisma)
   const repositoryFactory = new MemoryRepository()
   const cityRepository = repositoryFactory.createCityRepository()
   const categoryRepository = repositoryFactory.createCategoryRepository()
@@ -178,6 +195,7 @@ test("Deve editar um local com sucesso utilizando o nome", async () => {
 })
 
 test("Deve editar um local com sucesso utilizando o id da categoria", async () => {
+  // const repositoryFactory = new DatabaseRepository(prisma)
   const repositoryFactory = new MemoryRepository()
   const cityRepository = repositoryFactory.createCityRepository()
   const categoryRepository = repositoryFactory.createCategoryRepository()
@@ -237,6 +255,7 @@ test("Deve editar um local com sucesso utilizando o id da categoria", async () =
 })
 
 test("Deve tentar editar um local com id inválido", async () => {
+  // const repositoryFactory = new DatabaseRepository(prisma)
   const repositoryFactory = new MemoryRepository()
   const cityRepository = repositoryFactory.createCityRepository()
   const categoryRepository = repositoryFactory.createCategoryRepository()

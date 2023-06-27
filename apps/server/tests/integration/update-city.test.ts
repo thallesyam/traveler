@@ -1,9 +1,25 @@
-import { expect, test } from "vitest"
+import { beforeAll, beforeEach, expect, test } from "vitest"
+import { PrismaClient } from "@prisma/client"
 import { SaveCity, UpdateCity } from "@/application/usecases"
 import { City } from "@/domain/entities"
-import { MemoryRepository } from "@/infra/factories"
+import { DatabaseRepository, MemoryRepository } from "@/infra/factories"
+
+// let prisma: PrismaClient
+
+// beforeAll(() => {
+//   prisma = new PrismaClient()
+// })
+
+// beforeEach(async () => {
+//   await prisma.comment.deleteMany()
+//   await prisma.local.deleteMany()
+//   await prisma.category.deleteMany()
+//   await prisma.city.deleteMany()
+//   await prisma.user.deleteMany()
+// })
 
 test("Deve editar todos os dados de uma cidade com sucesso", async () => {
+  // const repositoryFactory = new DatabaseRepository(prisma)
   const repositoryFactory = new MemoryRepository()
   const cityRepository = repositoryFactory.createCityRepository()
   const input = {
@@ -30,6 +46,7 @@ test("Deve editar todos os dados de uma cidade com sucesso", async () => {
 })
 
 test("Deve editar apenas um dos dados de uma cidade com sucesso utilizando nome", async () => {
+  // const repositoryFactory = new DatabaseRepository(prisma)
   const repositoryFactory = new MemoryRepository()
   const cityRepository = repositoryFactory.createCityRepository()
   const input = {
@@ -58,6 +75,7 @@ test("Deve editar apenas um dos dados de uma cidade com sucesso utilizando nome"
 })
 
 test("Deve editar apenas um dos dados de uma cidade com sucesso utilizando descrição", async () => {
+  // const repositoryFactory = new DatabaseRepository(prisma)
   const repositoryFactory = new MemoryRepository()
   const cityRepository = repositoryFactory.createCityRepository()
   const input = {
@@ -80,6 +98,7 @@ test("Deve editar apenas um dos dados de uma cidade com sucesso utilizando descr
 })
 
 test("Deve editar apenas um dos dados de uma cidade com sucesso utilizando imagens", async () => {
+  // const repositoryFactory = new DatabaseRepository(prisma)
   const repositoryFactory = new MemoryRepository()
   const cityRepository = repositoryFactory.createCityRepository()
   const input = {
@@ -101,6 +120,7 @@ test("Deve editar apenas um dos dados de uma cidade com sucesso utilizando image
 })
 
 test("Deve tentar editar os dados de uma cidade com id errado", async () => {
+  // const repositoryFactory = new DatabaseRepository(prisma)
   const repositoryFactory = new MemoryRepository()
   const cityRepository = repositoryFactory.createCityRepository()
   const input = {

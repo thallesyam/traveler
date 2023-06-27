@@ -42,7 +42,7 @@ export class LocalRepositoryDatabase implements LocalRepository {
         address: { ...local.address },
         slug: local.slug,
         rating: local.getRating() ?? 0,
-        openingHours: { openingHours: local.openingHours },
+        openingHours: { openingHours: local.openingHours ?? undefined },
         category: {
           connect: {
             id: local.category.getCategoryId(),
@@ -137,7 +137,7 @@ export class LocalRepositoryDatabase implements LocalRepository {
 
 export function toEntityLocal(local: LocalDatabaseModel) {
   const addressData = local.address as unknown as Address
-  const { openingHours } = local.openingHours as unknown as IHours
+  const { openingHours } = local?.openingHours as unknown as IHours
   const address = new Address(
     addressData.cep,
     addressData.street,
@@ -146,7 +146,9 @@ export function toEntityLocal(local: LocalDatabaseModel) {
     addressData.coordinate
   )
   const category = toEntityCategory(local.category)
-  const comments = local.comment.map(toEntityComment)
+  const comments = !!local?.comment?.length
+    ? local?.comment?.map(toEntityComment)
+    : []
   const localToEntity = new Local(
     local.name,
     local.description,

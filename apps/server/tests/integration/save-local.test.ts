@@ -1,7 +1,22 @@
-import { expect, test } from "vitest"
+import { beforeAll, beforeEach, expect, test } from "vitest"
+import { PrismaClient } from "@prisma/client"
 import { SaveCategory, SaveCity, SaveLocal } from "@/application/usecases"
 import { Address, Category, City } from "@/domain/entities"
-import { MemoryRepository } from "@/infra/factories"
+import { DatabaseRepository, MemoryRepository } from "@/infra/factories"
+
+// let prisma: PrismaClient
+
+// beforeAll(() => {
+//   prisma = new PrismaClient()
+// })
+
+// beforeEach(async () => {
+//   await prisma.comment.deleteMany()
+//   await prisma.local.deleteMany()
+//   await prisma.category.deleteMany()
+//   await prisma.city.deleteMany()
+//   await prisma.user.deleteMany()
+// })
 
 const mockOpeningHours = [
   {
@@ -43,6 +58,7 @@ const mockOpeningHours = [
 
 test("Deve criar um local com sucesso", async () => {
   const repositoryFactory = new MemoryRepository()
+  // const repositoryFactory = new DatabaseRepository(prisma)
   const cityRepository = repositoryFactory.createCityRepository()
   const categoryRepository = repositoryFactory.createCategoryRepository()
   const localRepository = repositoryFactory.createLocalRepository()
@@ -97,6 +113,7 @@ test("Deve criar um local com sucesso", async () => {
 
 test("Deve criar um local de destaque com sucesso", async () => {
   const repositoryFactory = new MemoryRepository()
+  // const repositoryFactory = new DatabaseRepository(prisma)
   const cityRepository = repositoryFactory.createCityRepository()
   const categoryRepository = repositoryFactory.createCategoryRepository()
   const localRepository = repositoryFactory.createLocalRepository()
@@ -152,6 +169,7 @@ test("Deve criar um local de destaque com sucesso", async () => {
 
 test("Deve tentar criar um local inválido", async () => {
   const repositoryFactory = new MemoryRepository()
+  // const repositoryFactory = new DatabaseRepository(prisma)
   const cityRepository = repositoryFactory.createCityRepository()
   const categoryRepository = repositoryFactory.createCategoryRepository()
   const localRepository = repositoryFactory.createLocalRepository()

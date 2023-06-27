@@ -1,4 +1,5 @@
-import { expect, test } from "vitest"
+import { beforeAll, beforeEach, expect, test } from "vitest"
+import { PrismaClient } from "@prisma/client"
 import {
   GetLocalBySlug,
   SaveCategory,
@@ -8,10 +9,25 @@ import {
   DeleteComment,
 } from "@/application/usecases"
 import { Address, Category, City } from "@/domain/entities"
-import { MemoryRepository } from "@/infra/factories"
+import { DatabaseRepository, MemoryRepository } from "@/infra/factories"
+
+// let prisma: PrismaClient
+
+// beforeAll(() => {
+//   prisma = new PrismaClient()
+// })
+
+// beforeEach(async () => {
+//   await prisma.comment.deleteMany()
+//   await prisma.local.deleteMany()
+//   await prisma.category.deleteMany()
+//   await prisma.city.deleteMany()
+//   await prisma.user.deleteMany()
+// })
 
 test("Deve deletar um comentário com sucesso", async () => {
   const repositoryFactory = new MemoryRepository()
+  // const repositoryFactory = new DatabaseRepository(prisma)
   const cityRepository = repositoryFactory.createCityRepository()
   const categoryRepository = repositoryFactory.createCategoryRepository()
   const localRepository = repositoryFactory.createLocalRepository()
@@ -75,6 +91,7 @@ test("Deve deletar um comentário com sucesso", async () => {
 
 test("Deve criar dois comentários e deletar corretamente um deles", async () => {
   const repositoryFactory = new MemoryRepository()
+  // const repositoryFactory = new DatabaseRepository(prisma)
   const cityRepository = repositoryFactory.createCityRepository()
   const categoryRepository = repositoryFactory.createCategoryRepository()
   const localRepository = repositoryFactory.createLocalRepository()
@@ -146,6 +163,7 @@ test("Deve criar dois comentários e deletar corretamente um deles", async () =>
 
 test("Deve tentar deletar um comentário com id inválido", async () => {
   const repositoryFactory = new MemoryRepository()
+  // const repositoryFactory = new DatabaseRepository(prisma)
   const localRepository = repositoryFactory.createLocalRepository()
   const commentRepository = repositoryFactory.createCommentRepository()
   const deleteComment = new DeleteComment(commentRepository, localRepository)
