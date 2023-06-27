@@ -14,8 +14,9 @@ async function init() {
     repositoryFactory.createUserRepository(),
     tokenGateway
   )
+  const checkAuth = new CheckAuth(tokenGateway)
 
-  new RestController(httpServer, login)
+  new RestController(httpServer, login, checkAuth)
   httpServer.listen(3000)
 }
 
