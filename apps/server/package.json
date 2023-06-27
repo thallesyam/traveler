@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "prisma": {
-    "schema": "./src/infra/drivers/prisma/schema.prisma"
+    "schema": "./src/infra/drivers/prisma/postgres/schema.prisma"
   },
   "scripts": {
     "dev": "tsx watch src/main.ts",

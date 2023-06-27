@@ -1,0 +1,78 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "postgresql"
+  url          = env("DATABASE_URL_POSTGRES")
+  relationMode = "prisma"
+}
+
+model User {
+  id       String @id @default(uuid())
+  name     String
+  email    String @unique
+  password String
+
+  createdAt DateTime @default(now())
+}
+
+model City {
+  id          String  @id @default(uuid())
+  name        String
+  slug        String
+  images      Json
+  description String  @db.VarChar(400)
+  locals      Local[]
+
+  createdAt DateTime @default(now())
+}
+
+model Local {
+  id           String   @id @default(uuid())
+  name         String
+  slug         String
+  description  String   @db.VarChar(400)
+  images       Json
+  address      Json
+  openingHours Json
+  rating       Float
+  observation  String?
+  isHightlight Boolean?
+  categoryId   String
+  cityId       String
+
+  category Category? @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  city     City?     @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  comment  Comment[]
+
+  createdAt DateTime @default(now())
+
+  @@index([categoryId])
+  @@index([cityId])
+}
+
+model Category {
+  id    String @id @default(uuid())
+  name  String
+  image String
+
+  local Local[]
+
+  createdAt DateTime @default(now())
+}
+
+model Comment {
+  id     String   @id @default(uuid())
+  name   String
+  image  String
+  text   String
+  rating Float
+  status Boolean?
+
+  local     Local?   @relation(fields: [localId], references: [id], onDelete: Cascade)
+  localId   String?
+  createdAt DateTime @default(now())
+
+  @@index([localId])
+}
