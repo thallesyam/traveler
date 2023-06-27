@@ -6,6 +6,17 @@ export class UserRepositoryMemory implements UserRepository {
 
   constructor() {
     this.users = []
+    this.createDefaultUser()
+  }
+
+  private async createDefaultUser() {
+    const defaultUser = await User.create(
+      "Thalles Ian",
+      "thallesyam@gmail.com",
+      "admin@123"
+    )
+
+    this.users.push(defaultUser)
   }
 
   async save(user: User): Promise<void> {
