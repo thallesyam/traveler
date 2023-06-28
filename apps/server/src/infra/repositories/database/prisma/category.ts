@@ -72,6 +72,10 @@ export class CategoryRepositoryDatabase implements CategoryRepository {
   async delete(id: string): Promise<void> {
     await this.prisma.category.delete({ where: { id } })
   }
+
+  async restore(): Promise<void> {
+    await this.prisma.category.deleteMany()
+  }
 }
 
 export function toEntityCategory(category: CategoryDatabaseModel) {

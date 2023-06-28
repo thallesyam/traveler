@@ -54,4 +54,8 @@ export class CityRepositoryMemory implements CityRepository {
     }
     return city
   }
+
+  async restore(): Promise<void> {
+    this.cities = []
+  }
 }

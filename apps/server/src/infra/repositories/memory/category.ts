@@ -66,4 +66,8 @@ export class CategoryRepositoryMemory implements CategoryRepository {
       (category) => category.getCategoryId() !== id
     )
   }
+
+  async restore(): Promise<void> {
+    this.categories = []
+  }
 }

@@ -8,4 +8,5 @@ export interface CategoryRepository {
   findByCityId(cityId: string): Promise<{ name: string; quantity: number }[]>
   update(id: string, data: Category): Promise<void>
   delete(id: string): Promise<void>
+  restore(): Promise<void>
 }

@@ -133,6 +133,10 @@ export class LocalRepositoryDatabase implements LocalRepository {
   async delete(id: string): Promise<void> {
     await this.prisma.local.delete({ where: { id } })
   }
+
+  async restore(): Promise<void> {
+    await this.prisma.local.deleteMany()
+  }
 }
 
 export function toEntityLocal(local: LocalDatabaseModel) {

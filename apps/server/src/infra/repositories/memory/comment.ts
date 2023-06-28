@@ -45,4 +45,8 @@ export class CommentRepositoryMemory implements CommentRepository {
       (comment) => comment.getCommentId() !== id
     )
   }
+
+  async restore(): Promise<void> {
+    this.comments = []
+  }
 }

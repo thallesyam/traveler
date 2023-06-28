@@ -1,5 +1,15 @@
 import { PrismaClient } from "@prisma/client"
-import { CheckAuth, Login } from "@/application/usecases"
+import {
+  CheckAuth,
+  DeleteCity,
+  GetCities,
+  GetCityById,
+  GetCityBySlug,
+  Login,
+  RestoreDatabase,
+  SaveCity,
+  UpdateCity,
+} from "@/application/usecases"
 
 import { ExpressAdapter } from "@/infra/http/adapter"
 import { RestController } from "@/infra/controller/rest-controller"
@@ -18,8 +28,34 @@ async function init() {
     tokenGateway
   )
   const checkAuth = new CheckAuth(tokenGateway)
+  const saveCity = new SaveCity(repositoryFactory.createCityRepository())
+  const getCities = new GetCities(repositoryFactory.createCityRepository())
+  const getCity = new GetCityById(repositoryFactory.createCityRepository())
+  const getCityBySlug = new GetCityBySlug(
+    repositoryFactory.createCityRepository()
+  )
+  const updateCity = new UpdateCity(repositoryFactory.createCityRepository())
+  const deleteCity = new DeleteCity(repositoryFactory.createCityRepository())
 
-  new RestController(httpServer, login, checkAuth)
+  const restoreDatabase = new RestoreDatabase(
+    repositoryFactory.createCityRepository(),
+    repositoryFactory.createCategoryRepository(),
+    repositoryFactory.createLocalRepository(),
+    repositoryFactory.createCommentRepository()
+  )
+
+  new RestController(
+    httpServer,
+    login,
+    checkAuth,
+    saveCity,
+    getCities,
+    getCity,
+    getCityBySlug,
+    updateCity,
+    deleteCity,
+    restoreDatabase
+  )
   httpServer.listen(3000)
 }
 

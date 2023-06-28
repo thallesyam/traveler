@@ -88,6 +88,10 @@ export class CityRepositoryDatabase implements CityRepository {
   async delete(id: string): Promise<void> {
     await this.prisma.city.delete({ where: { id } })
   }
+
+  async restore(): Promise<void> {
+    await this.prisma.city.deleteMany()
+  }
 }
 
 export function toEntityCity(city: CityDatabaseModel) {

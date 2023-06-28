@@ -50,4 +50,8 @@ export class LocalRepositoryMemory implements LocalRepository {
   async delete(id: string): Promise<void> {
     this.locals = this.locals.filter((local) => local.getLocalId() !== id)
   }
+
+  async restore(): Promise<void> {
+    this.locals = []
+  }
 }

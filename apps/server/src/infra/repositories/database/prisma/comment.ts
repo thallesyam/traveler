@@ -62,6 +62,10 @@ export class CommentRepositoryDatabase implements CommentRepository {
   async delete(id: string): Promise<void> {
     await this.prisma.comment.delete({ where: { id } })
   }
+
+  async restore(): Promise<void> {
+    await this.prisma.comment.deleteMany()
+  }
 }
 
 export function toEntityComment(comment: CommentDatabaseModel) {

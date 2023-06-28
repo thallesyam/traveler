@@ -8,4 +8,5 @@ export interface LocalRepository {
   findByCityId(cityId: string): Promise<Local[]>
   update(id: string, data: Local): Promise<void>
   delete(id: string): Promise<void>
+  restore(): Promise<void>
 }

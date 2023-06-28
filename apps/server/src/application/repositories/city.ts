@@ -8,4 +8,5 @@ export interface CityRepository {
   findBySlug(slug: string): Promise<City>
   update(id: string, data: City): Promise<void>
   delete(id: string): Promise<void>
+  restore(): Promise<void>
 }

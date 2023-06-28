@@ -6,4 +6,5 @@ export interface CommentRepository {
   findById(id: string): Promise<Comment>
   delete(id: string): Promise<void>
   updateStatus(id: string, status: "approved" | "reproved"): Promise<void>
+  restore(): Promise<void>
 }
