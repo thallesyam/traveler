@@ -105,10 +105,6 @@ test("Deve testar a remoção de uma cidade pela API", async () => {
     description:
       "O Rio de Janeiro é uma cidade deslumbrante com paisagens de tirar o fôlego.",
   }
-  const inputCityUpdate = {
-    images: ["fake-image", "fake-image-updated"],
-  }
-
   await axios.post("http://localhost:3000/city", inputCity)
   const response = await axios.get("http://localhost:3000/cities")
   const { cities } = response.data
