@@ -14,6 +14,12 @@ import {
   GetCategories,
   UpdateCategory,
   DeleteCategory,
+  SaveLocal,
+  GetLocalById,
+  GetLocals,
+  GetLocalBySlug,
+  DeleteLocal,
+  UpdateLocal,
 } from "@/application/usecases"
 import { HttpServer } from "@/infra/http/ports"
 
@@ -34,6 +40,12 @@ export class RestController {
     readonly getCategories: GetCategories,
     readonly updateCategory: UpdateCategory,
     readonly deleteCategory: DeleteCategory,
+    readonly saveLocal: SaveLocal,
+    readonly getLocals: GetLocals,
+    readonly getLocalById: GetLocalById,
+    readonly getLocalBySlug: GetLocalBySlug,
+    readonly deleteLocal: DeleteLocal,
+    readonly updateLocal: UpdateLocal,
     readonly restoreDatabase: RestoreDatabase
   ) {
     httpServer.on("post", "/login", async function (params: any, body: any) {
@@ -159,6 +171,58 @@ export class RestController {
           id: params.id,
         }
         await deleteCategory.execute(input)
+      }
+    )
+
+    httpServer.on("post", "/local", async function (params: any, body: any) {
+      await saveLocal.execute(body)
+    })
+
+    httpServer.on("get", "/locals", async function (params: any, body: any) {
+      const locals = await getLocals.execute()
+      return { locals }
+    })
+
+    httpServer.on(
+      "get",
+      "/local/id/:id",
+      async function (params: any, body: any) {
+        const input = {
+          id: params.id,
+        }
+        const local = await getLocalById.execute(input)
+        return { local }
+      }
+    )
+
+    httpServer.on(
+      "get",
+      "/local/slug/:slug",
+      async function (params: any, body: any) {
+        const input = {
+          slug: params.slug,
+        }
+        const local = await getLocalBySlug.execute(input)
+        return { local }
+      }
+    )
+
+    httpServer.on("put", "/local/:id", async function (params: any, body: any) {
+      const input = {
+        id: params.id,
+        data: body,
+      }
+      await updateLocal.execute(input)
+    })
+
+    httpServer.on(
+      "delete",
+      "/local/:id",
+      async function (params: any, body: any) {
+        const input = {
+          id: params.id,
+        }
+        await deleteLocal.execute(input)
       }
     )
 

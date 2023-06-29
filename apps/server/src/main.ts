@@ -15,6 +15,12 @@ import {
   SaveCity,
   UpdateCategory,
   UpdateCity,
+  SaveLocal,
+  GetLocalById,
+  GetLocals,
+  GetLocalBySlug,
+  DeleteLocal,
+  UpdateLocal,
 } from "@/application/usecases"
 
 import { ExpressAdapter } from "@/infra/http/adapter"
@@ -63,6 +69,26 @@ async function init() {
     repositoryFactory.createLocalRepository()
   )
 
+  const saveLocal = new SaveLocal(
+    repositoryFactory.createCityRepository(),
+    repositoryFactory.createCategoryRepository(),
+    repositoryFactory.createLocalRepository()
+  )
+  const getLocals = new GetLocals(repositoryFactory.createLocalRepository())
+  const getLocal = new GetLocalById(repositoryFactory.createLocalRepository())
+  const getLocalBySlug = new GetLocalBySlug(
+    repositoryFactory.createLocalRepository()
+  )
+  const updateLocal = new UpdateLocal(
+    repositoryFactory.createLocalRepository(),
+    repositoryFactory.createCityRepository(),
+    repositoryFactory.createCategoryRepository()
+  )
+  const deleteLocal = new DeleteLocal(
+    repositoryFactory.createCityRepository(),
+    repositoryFactory.createLocalRepository()
+  )
+
   const restoreDatabase = new RestoreDatabase(
     repositoryFactory.createCityRepository(),
     repositoryFactory.createCategoryRepository(),
@@ -86,6 +112,12 @@ async function init() {
     getCategories,
     updateCategory,
     deleteCategory,
+    saveLocal,
+    getLocals,
+    getLocal,
+    getLocalBySlug,
+    deleteLocal,
+    updateLocal,
     restoreDatabase
   )
   httpServer.listen(3000)
