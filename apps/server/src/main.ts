@@ -1,13 +1,19 @@
 import { PrismaClient } from "@prisma/client"
 import {
   CheckAuth,
+  DeleteCategory,
   DeleteCity,
+  GetCategories,
+  GetCategoryByCityId,
+  GetCategoryById,
   GetCities,
   GetCityById,
   GetCityBySlug,
   Login,
   RestoreDatabase,
+  SaveCategory,
   SaveCity,
+  UpdateCategory,
   UpdateCity,
 } from "@/application/usecases"
 
@@ -37,6 +43,26 @@ async function init() {
   const updateCity = new UpdateCity(repositoryFactory.createCityRepository())
   const deleteCity = new DeleteCity(repositoryFactory.createCityRepository())
 
+  const saveCategory = new SaveCategory(
+    repositoryFactory.createCategoryRepository()
+  )
+  const getCategories = new GetCategories(
+    repositoryFactory.createCategoryRepository()
+  )
+  const getCategoryByCityId = new GetCategoryByCityId(
+    repositoryFactory.createCategoryRepository()
+  )
+  const getCategoryById = new GetCategoryById(
+    repositoryFactory.createCategoryRepository()
+  )
+  const updateCategory = new UpdateCategory(
+    repositoryFactory.createCategoryRepository()
+  )
+  const deleteCategory = new DeleteCategory(
+    repositoryFactory.createCategoryRepository(),
+    repositoryFactory.createLocalRepository()
+  )
+
   const restoreDatabase = new RestoreDatabase(
     repositoryFactory.createCityRepository(),
     repositoryFactory.createCategoryRepository(),
@@ -54,6 +80,12 @@ async function init() {
     getCityBySlug,
     updateCity,
     deleteCity,
+    saveCategory,
+    getCategoryByCityId,
+    getCategoryById,
+    getCategories,
+    updateCategory,
+    deleteCategory,
     restoreDatabase
   )
   httpServer.listen(3000)

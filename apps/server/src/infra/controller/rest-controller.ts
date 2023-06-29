@@ -8,6 +8,12 @@ import {
   GetCityBySlug,
   UpdateCity,
   DeleteCity,
+  SaveCategory,
+  GetCategoryByCityId,
+  GetCategoryById,
+  GetCategories,
+  UpdateCategory,
+  DeleteCategory,
 } from "@/application/usecases"
 import { HttpServer } from "@/infra/http/ports"
 
@@ -22,6 +28,12 @@ export class RestController {
     readonly getCityBySlug: GetCityBySlug,
     readonly updateCity: UpdateCity,
     readonly deleteCity: DeleteCity,
+    readonly saveCategory: SaveCategory,
+    readonly getCategoriesByCityId: GetCategoryByCityId,
+    readonly getCategoryById: GetCategoryById,
+    readonly getCategories: GetCategories,
+    readonly updateCategory: UpdateCategory,
+    readonly deleteCategory: DeleteCategory,
     readonly restoreDatabase: RestoreDatabase
   ) {
     httpServer.on("post", "/login", async function (params: any, body: any) {
@@ -87,6 +99,66 @@ export class RestController {
           id: params.id,
         }
         await deleteCity.execute(input)
+      }
+    )
+
+    httpServer.on("post", "/category", async function (params: any, body: any) {
+      await saveCategory.execute(body)
+    })
+
+    httpServer.on(
+      "get",
+      "/categories",
+      async function (params: any, body: any) {
+        const categories = await getCategories.execute()
+        return { categories }
+      }
+    )
+
+    httpServer.on(
+      "get",
+      "/category/byCityId/:cityId",
+      async function (params: any, body: any) {
+        const input = {
+          cityId: params.cityId,
+        }
+        const categories = await getCategoriesByCityId.execute(input)
+        return { categories }
+      }
+    )
+
+    httpServer.on(
+      "get",
+      "/category/id/:categoryId",
+      async function (params: any, body: any) {
+        const input = {
+          id: params.categoryId,
+        }
+        const category = await getCategoryById.execute(input)
+        return { category }
+      }
+    )
+
+    httpServer.on(
+      "put",
+      "/category/:id",
+      async function (params: any, body: any) {
+        const input = {
+          id: params.id,
+          data: body,
+        }
+        await updateCategory.execute(input)
+      }
+    )
+
+    httpServer.on(
+      "delete",
+      "/category/:id",
+      async function (params: any, body: any) {
+        const input = {
+          id: params.id,
+        }
+        await deleteCategory.execute(input)
       }
     )
 
