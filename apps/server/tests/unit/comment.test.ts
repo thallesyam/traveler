@@ -2,19 +2,20 @@ import { expect, test } from "vitest"
 import { Comment } from "@/domain/entities"
 
 test("Deve criar uma cidade válida", async () => {
-  const city = new Comment(
+  const comment = new Comment(
     "Thalles Ian",
     "fake-image",
     "Local muito interessante",
     5,
     "fake-local-id"
   )
-  expect(city.name).toBe("Thalles Ian")
-  expect(city.image).toBe("fake-image")
-  expect(city.text).toBe("Local muito interessante")
-  expect(city.rating).toBe(5)
-  expect(city.getStatus()).toBe(undefined)
-  expect(city.getCommentId()).toBeTruthy()
+  comment.setCommentId("1")
+  expect(comment.name).toBe("Thalles Ian")
+  expect(comment.image).toBe("fake-image")
+  expect(comment.text).toBe("Local muito interessante")
+  expect(comment.rating).toBe(5)
+  expect(comment.getStatus()).toBe(undefined)
+  expect(comment.getCommentId()).toBeTruthy()
 })
 
 test("Deve tentar criar uma cidade informação", async () => {
