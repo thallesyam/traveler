@@ -20,6 +20,11 @@ import {
   GetLocalBySlug,
   DeleteLocal,
   UpdateLocal,
+  SaveComment,
+  GetComments,
+  GetCommentById,
+  DeleteComment,
+  ApproveComment,
 } from "@/application/usecases"
 import { HttpServer } from "@/infra/http/ports"
 
@@ -46,6 +51,11 @@ export class RestController {
     readonly getLocalBySlug: GetLocalBySlug,
     readonly deleteLocal: DeleteLocal,
     readonly updateLocal: UpdateLocal,
+    readonly saveComment: SaveComment,
+    readonly getComments: GetComments,
+    readonly getCommentById: GetCommentById,
+    readonly deleteComment: DeleteComment,
+    readonly approveComment: ApproveComment,
     readonly restoreDatabase: RestoreDatabase
   ) {
     httpServer.on("post", "/login", async function (params: any, body: any) {
@@ -223,6 +233,51 @@ export class RestController {
           id: params.id,
         }
         await deleteLocal.execute(input)
+      }
+    )
+
+    httpServer.on("post", "/comment", async function (params: any, body: any) {
+      await saveComment.execute(body)
+    })
+
+    httpServer.on("get", "/comments", async function (params: any, body: any) {
+      const comments = await getComments.execute()
+      return { comments }
+    })
+
+    httpServer.on(
+      "get",
+      "/comment/id/:id",
+      async function (params: any, body: any) {
+        const input = {
+          id: params.id,
+        }
+        const comment = await getCommentById.execute(input)
+        return { comment }
+      }
+    )
+
+    httpServer.on(
+      "put",
+      "/comment/change-status/:id",
+      async function (params: any, body: any) {
+        const input = {
+          id: params.id,
+          status: body?.status ?? "false",
+        }
+
+        await approveComment.execute(input)
+      }
+    )
+
+    httpServer.on(
+      "delete",
+      "/comment/:id",
+      async function (params: any, body: any) {
+        const input = {
+          id: params.id,
+        }
+        await deleteComment.execute(input)
       }
     )
 

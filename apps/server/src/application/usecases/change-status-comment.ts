@@ -13,6 +13,7 @@ export class ApproveComment {
     local.removeComment(comment.getCommentId())
     local.setComment(comment)
     local.calculateRating()
+
     const status = comment.getStatus() === true ? "approved" : "reproved"
 
     await this.commentRepository.updateStatus(comment.getCommentId(), status)

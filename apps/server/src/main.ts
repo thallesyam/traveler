@@ -21,6 +21,11 @@ import {
   GetLocalBySlug,
   DeleteLocal,
   UpdateLocal,
+  SaveComment,
+  GetComments,
+  GetCommentById,
+  DeleteComment,
+  ApproveComment,
 } from "@/application/usecases"
 
 import { ExpressAdapter } from "@/infra/http/adapter"
@@ -89,6 +94,25 @@ async function init() {
     repositoryFactory.createLocalRepository()
   )
 
+  const saveComment = new SaveComment(
+    repositoryFactory.createCommentRepository(),
+    repositoryFactory.createLocalRepository()
+  )
+  const getComments = new GetComments(
+    repositoryFactory.createCommentRepository()
+  )
+  const getComment = new GetCommentById(
+    repositoryFactory.createCommentRepository()
+  )
+  const approveComment = new ApproveComment(
+    repositoryFactory.createCommentRepository(),
+    repositoryFactory.createLocalRepository()
+  )
+  const deleteComment = new DeleteComment(
+    repositoryFactory.createCommentRepository(),
+    repositoryFactory.createLocalRepository()
+  )
+
   const restoreDatabase = new RestoreDatabase(
     repositoryFactory.createCityRepository(),
     repositoryFactory.createCategoryRepository(),
@@ -118,6 +142,11 @@ async function init() {
     getLocalBySlug,
     deleteLocal,
     updateLocal,
+    saveComment,
+    getComments,
+    getComment,
+    deleteComment,
+    approveComment,
     restoreDatabase
   )
   httpServer.listen(3000)
