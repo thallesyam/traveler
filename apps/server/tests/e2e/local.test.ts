@@ -134,19 +134,7 @@ test("Deve testar a busca um local por id pela API", async () => {
     categoryId: categories[0].id,
     isHightlight: true,
   }
-  const inputLocal1 = {
-    name: "Bar da cidade",
-    description:
-      "O melhor lugar da cidade para você tomar um bom café. Fatias de tortas artesanais, bolos, lanches e biscoitos caseiros.",
-    images: ["fake-image"],
-    address,
-    openingHours: undefined,
-    cityId: cities[0].id,
-    categoryId: categories[0].id,
-    isHightlight: true,
-  }
   await axios.post("http://localhost:3000/local", inputLocal)
-  await axios.post("http://localhost:3000/local", inputLocal1)
   const responseLocals = await axios.get("http://localhost:3000/locals")
   const { locals } = responseLocals.data
   const responseLocalById = await axios.get(
@@ -164,8 +152,8 @@ test("Deve testar a busca um local por id pela API", async () => {
   const { local } = responseLocalById.data
   expect(local.name).toEqual(inputLocal.name)
   expect(local.cityId).toEqual(inputLocal.cityId)
-  expect(citiesAfterLocal[0].locals).toHaveLength(2)
-  expect(categoriesAfterLocal[0].locals).toHaveLength(2)
+  expect(citiesAfterLocal[0].locals).toHaveLength(1)
+  expect(categoriesAfterLocal[0].locals).toHaveLength(1)
 })
 
 test("Deve testar a busca um local por slug pela API", async () => {

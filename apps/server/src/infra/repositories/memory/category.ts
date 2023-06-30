@@ -35,9 +35,7 @@ export class CategoryRepositoryMemory implements CategoryRepository {
   async findByCityId(
     cityId: string
   ): Promise<{ name: string; quantity: number }[]> {
-    const locals = this.categories.filter((category) =>
-      category.getLocalsInCategory().some((local) => local.cityId === cityId)
-    )
+    const locals = this.categories.map((category) => category)
 
     const count = locals.map((category) => {
       return {

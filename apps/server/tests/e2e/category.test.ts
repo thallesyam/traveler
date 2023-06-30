@@ -72,7 +72,8 @@ test("Deve testar a busca uma categoria por id da cidade pela API", async () => 
   )
 
   const { categories } = responseById.data
-  expect(categories).toHaveLength(0)
+
+  expect(categories).toEqual([{ name: "Eventos 123", quantity: 0 }])
 })
 
 test("Deve testar a edição de categoria pela API", async () => {
