@@ -3,7 +3,6 @@ import {
   CityRepository,
   CommentRepository,
   LocalRepository,
-  UserRepository,
 } from "@/application/repositories"
 
 export class RestoreDatabase {

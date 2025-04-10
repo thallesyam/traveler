@@ -10,6 +10,8 @@ import {
 } from "@/application/usecases"
 import { Address, Category, City } from "@/domain/entities"
 import { DatabaseRepository, MemoryRepository } from "@/infra/factories"
+import { getEnv } from "@/utils/get-env"
+
 
 // let prisma: PrismaClient
 

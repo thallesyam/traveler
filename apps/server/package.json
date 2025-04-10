@@ -9,7 +9,8 @@
   "scripts": {
     "dev": "tsx watch src/main.ts",
     "test": "vitest --no-threads",
-    "test:cov": "vitest --coverage --no-threads"
+    "test:cov": "vitest --coverage --no-threads",
+    "prisma:migrate:postgres": "npx prisma migrate dev --name init $npm_config_name --schema=./src/infra/drivers/prisma/postgres/schema.prisma"
   },
   "keywords": [],
   "author": "",
