@@ -1,0 +1,21 @@
+{
+  "name": "linter",
+  "version": "0.0.0",
+  "main": "index.js",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.30.0",
+    "@typescript-eslint/type-utils": "^8.30.0",
+    "@typescript-eslint/utils": "^8.30.0",
+    "eslint": "^9.24.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^5.2.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/parser": "^8.30.0"
+  }
+}

@@ -2,6 +2,7 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "index.js",
   "prisma": {
     "schema": "./src/infra/drivers/prisma/postgres/schema.prisma"
@@ -10,6 +11,8 @@
     "dev": "tsx watch src/main.ts",
     "test": "vitest --no-threads",
     "test:cov": "vitest --coverage --no-threads",
+    "lint": "pnpm exec eslint .",
+    "lint:fix": "pnpm exec eslint . --fix",
     "prisma:migrate:postgres": "npx prisma migrate dev --name init $npm_config_name --schema=./src/infra/drivers/prisma/postgres/schema.prisma"
   },
   "keywords": [],
@@ -22,6 +25,7 @@
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
+    "linter": "workspace:*",
     "tsconfig": "workspace:*",
     "tsup": "^6.7.0",
     "tsx": "^3.12.7",
@@ -32,6 +36,7 @@
     "@types/express": "^4.17.17",
     "@types/jsonwebtoken": "^9.0.2",
     "@vitest/coverage-c8": "^0.32.0",
+    "eslint": "^8.56.0",
     "git-commit-msg-linter": "^5.0.4",
     "vitest": "^0.31.4"
   }
